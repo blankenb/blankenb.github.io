@@ -1,0 +1,18 @@
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.flex-container > .players{
+  background-color: teal;
+}
+.player1{
+  background-color: tomato;
+}
+.player2{
+  background-color: thistle;
+}
+.flex-container > div {
+  flex: 50%;
+}
