@@ -6,25 +6,25 @@ class SplashPage extends React.Component {
       super(props);
 
       this.state = {
-        username: '',
-        otherUsername: ''
+        username1: '',
+        username2: ''
       }
     }
 
-    handleUsernameChange = event => {
+    handleUsername1Change = event => {
       this.setState({
-        username: event.target.value
+        username1: event.target.value
       })
     }
 
-    handleOtherUsernameChange = event => {
+    handleUsername2Change = event => {
       this.setState({
-        otherUsername: event.target.value
+        username2: event.target.value
       })
     }
 
     handleSubmit = () => {
-      alert(`${this.state.username} ${this.state.username2}`)
+      alert(`${this.state.username1} ${this.state.username2}`)
     }
 
     render() {
@@ -36,15 +36,15 @@ class SplashPage extends React.Component {
             <form onSubmit={this.handleSubmit}>
               <div class="textbox">
                 <input type="text" 
-                  value={this.state.username} 
-                  onChange={this.handleUsernameChange} 
+                  value={this.state.username1} 
+                  onChange={this.handleUsername1Change} 
                   placeholder="Username"
                 />
               </div>
               <div class="textbox">
                 <input type="text" 
-                  value={this.state.otherUsername} 
-                  onChange={this.handleOtherUsernameChange} 
+                  value={this.state.username2} 
+                  onChange={this.handleUsername2Change} 
                   placeholder="Username"
                 />
               </div>

@@ -4,7 +4,15 @@ import logo from './logo.svg';
 class HomePage extends React.Component {
     constructor(props) {
       super(props);
-  
+
+      const { accessToken, username1, username2 } = this.props;
+
+      this.state = {
+        playlists1: [],
+        next1: '',
+        playlists2: [],
+        next2: ''
+      };
     }
 
     render() {

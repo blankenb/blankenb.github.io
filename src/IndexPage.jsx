@@ -23,16 +23,16 @@ class IndexPage extends React.Component {
     //   this.setState(newState);
     // }
 
-    authorize = () => {
+    getAuthToken = () => {
       fetch('https://accounts.spotify.com/api/token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': 'Basic ' + CLIENT_AUTH_FIELD
         },
-        body: "grant_type=client_credentials"
+        body: 'grant_type=client_credentials'
       })
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(
         (res) => {
           const validUntil = new Date();
@@ -40,22 +40,21 @@ class IndexPage extends React.Component {
           const spotifyAuth = {
             accessToken: res.access_token,
             validUntil: validUntil.getTime()
-          } // Match fields in state
-
+          } // Needs to match fields in state
+    
           localStorage.setItem('spotifyAccessToken', spotifyAuth.accessToken);
           localStorage.setItem('spotifyValidUntil', spotifyAuth.validUntil);
           this.setState(spotifyAuth);
         },
-        (err) => {
-          console.log(err);
-        }
+        (err) => console.log(err)
       )
     }
 
     componentDidMount() {
-      if (localStorage.getItem('spotifyAccessToken') === null || Number(localStorage.getItem('spotifyValidUntil')) <= Date.now()) {
+      if (localStorage.getItem('spotifyAccessToken') === null ||
+          Number(localStorage.getItem('spotifyValidUntil')) <= Date.now()) {
         console.log("authorizing");
-        this.authorize();
+        this.getAuthToken();
       } else {
         this.setState({
           accessToken: localStorage.getItem('spotifyAccessToken'),
