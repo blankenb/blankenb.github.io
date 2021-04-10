@@ -12,16 +12,10 @@ class IndexPage extends React.Component {
         accessToken: null,
         validUntil: null,
         fetchedPlaylists: false,
-        userPlaylists: [],
-        otherPlaylists: []
+        username1: '',
+        username2: ''
       };
-
-      // this.blah = this.blah.bind(this);
     }
-
-    // blah(newState) {
-    //   this.setState(newState);
-    // }
 
     getAuthToken = () => {
       fetch('https://accounts.spotify.com/api/token', {
@@ -50,6 +44,13 @@ class IndexPage extends React.Component {
       )
     }
 
+    setUsernames = (username1, username2) => {
+      this.setState({
+        username1: username1,
+        username2: username2
+      });
+    }
+
     componentDidMount() {
       if (localStorage.getItem('spotifyAccessToken') === null ||
           Number(localStorage.getItem('spotifyValidUntil')) <= Date.now()) {
@@ -64,14 +65,20 @@ class IndexPage extends React.Component {
     }
 
     render() {
-        if (this.state.fetchedPlaylists) {
-          return <HomePage />;
+        if (this.state.username1 !== '' && this.state.username2 !== '') {
+          // DEBUG
+          return (
+            <div>
+              <p>DEBUG2: {this.state.accessToken}</p>
+              <HomePage accessToken={this.state.accessToken} username1={this.state.username1} username2={this.state.username2} />;
+            </div>
+          )
         } else {
           // DEBUG
           return (
             <div>
               <p>DEBUG: {this.state.accessToken}</p>
-              <SplashPage />
+              <SplashPage setUsernames={this.setUsernames} />
             </div>
           );
         }
