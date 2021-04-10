@@ -30,6 +30,8 @@ class SplashPage extends React.Component {
     }
 
     render() {
+      // TODO: Handle usernames being the same
+      // TODO: Handle invalid username being provided
       return (
         <div class="banner">
           <div class="content">
