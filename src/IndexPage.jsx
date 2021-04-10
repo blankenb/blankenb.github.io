@@ -12,8 +12,8 @@ class IndexPage extends React.Component {
         accessToken: null,
         validUntil: null,
         fetchedPlaylists: false,
-        username1: '',
-        username2: ''
+        playlist1: '',
+        playlist2: ''
       };
     }
 
@@ -44,10 +44,10 @@ class IndexPage extends React.Component {
       )
     }
 
-    setUsernames = (username1, username2) => {
+    setPlaylists = (playlist1, playlist2) => {
       this.setState({
-        username1: username1,
-        username2: username2
+        playlist1: playlist1,
+        playlist2: playlist2
       });
     }
 
@@ -65,12 +65,12 @@ class IndexPage extends React.Component {
     }
 
     render() {
-        if (this.state.username1 !== '' && this.state.username2 !== '') {
+        if (this.state.playlist1 !== '' && this.state.playlist2 !== '') {
           // DEBUG
           return (
             <div>
               <p>DEBUG2: {this.state.accessToken}</p>
-              <HomePage accessToken={this.state.accessToken} username1={this.state.username1} username2={this.state.username2} />;
+              <HomePage accessToken={this.state.accessToken} playlist1={this.state.playlist1} playlist2={this.state.playlist2} />;
             </div>
           )
         } else {
@@ -78,7 +78,7 @@ class IndexPage extends React.Component {
           return (
             <div>
               <p>DEBUG: {this.state.accessToken}</p>
-              <SplashPage setUsernames={this.setUsernames} />
+              <SplashPage setPlaylists={this.setPlaylists} />
             </div>
           );
         }

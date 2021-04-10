@@ -6,49 +6,48 @@ class SplashPage extends React.Component {
       super(props);
 
       this.state = {
-        username1: '',
-        username2: ''
+        playlist1: '',
+        playlist2: ''
       };
     }
 
-    handleUsername1Change = event => {
+    handlePlaylist1Change = event => {
       this.setState({
-        username1: event.target.value
+        playlist1: event.target.value
       });
     }
 
-    handleUsername2Change = event => {
+    handlePlaylist2Change = event => {
       this.setState({
-        username2: event.target.value
+        playlist2: event.target.value
       });
     }
 
     handleSubmit = () => {
-      // alert(`${this.state.username1} ${this.state.username2}`);
       console.log("handling submit");
-      this.props.setUsernames(this.state.username1, this.state.username2);
+      this.props.setPlaylists(this.state.playlist1, this.state.playlist2);
     }
 
     render() {
-      // TODO: Handle usernames being the same
-      // TODO: Handle invalid username being provided
+      // TODO: Handle playlists being the same
+      // TODO: Handle invalid playlist being provided
       return (
         <div class="banner">
           <div class="content">
               <h1>Welcome to Library Linker</h1> 
-              <p>Enter two unique Spotify usernames below to begin.</p> 
+              <p>Enter URLs to two Spotify playlists below to begin.</p> 
             <form onSubmit={this.handleSubmit}>
                 <input type="text" 
                   class="textbox"
-                  value={this.state.username1} 
-                  onChange={this.handleUsername1Change} 
-                  placeholder="Username"
+                  value={this.state.playlist1} 
+                  onChange={this.handlePlaylist1Change} 
+                  placeholder="Playlist URL"
                 />
                 <input type="text" 
                   class="textbox"
-                  value={this.state.username2} 
-                  onChange={this.handleUsername2Change} 
-                  placeholder="Username"
+                  value={this.state.playlist2} 
+                  onChange={this.handlePlaylist2Change} 
+                  placeholder="Playlist URL"
                 />
                 <button type="submit" class="splash_button">Find Shared Tastes</button>
             </form>
