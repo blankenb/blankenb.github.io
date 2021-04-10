@@ -153,33 +153,28 @@ class HomePage extends React.Component {
       // this.fetchPlaylists("next2", "playlists2", null);
     }
 
-    render() {
-        var simularityScore = 69.420
-        var sharedGenres = ["weeb", "super weeb", "hyper weeb", "giga weeb", "metal"]
-        var recGenres = ["hello", "michelle"]
-        var sharedArtists = ["super weeb master 69 420"]
-        var recArtists = ["weebymcweeb"]
-        var sharedSongs = ["AYAYAYA", "WEEEEEEEEEEEEEEEEEEEEEEEEEEEEB"]
-        var recSongs = ["ok boomer"]
-        // DEBUG
-        return (
-          <div>
-            <div>Next1: {this.state.next1}</div>
-            <div>Playlists1: {JSON.stringify(this.state.playlists1.items)}</div>
-            <div>Next2: {this.state.next2}</div>
-            <div>Playlists2: {JSON.stringify(this.state.playlists2.items)}</div>
-            <div className="flex-container">  
-              <Users player1={this.props.playlist1} player2={this.props.playlist2} />
-              <Results simularityScore={simularityScore}
-                        sharedGenres={sharedGenres}
-                        recGenres={recGenres}
-                        sharedArtists={sharedArtists}
-                        recArtists={recArtists}
-                        sharedSongs={sharedSongs}
-                        recSongs={recSongs}/>
-            </div>
+    render(){
+      var simularityScore = 69.420
+      var sharedGenres = ["Hip-Hop", "Jazz", "Funk", "Soul", "R&B"]
+      var recGenres = ["Rock", "Pop"]
+      var sharedArtists = ["Kendrick Lamar", "Kanye West"]
+      var recArtists = ["Chief Keef", "Kanye East"]
+      var sharedSongs = ["Kendrick Lamar - Alright", "Kanye West - Ni**as in Paris", "Smash Mouth - All Star", "Outkast - Hey Ya!", "Earth, Wind & Fire - September"]
+      var recSongs = ["Chief Keef - Love Sosa", "Chief Keef - Hate Bein' Sober" , "Chief Keef - Faneto", "Chief Keef - I Don't Like", "Chief Keef - Semi On Em"]
+      return (
+        <div className="superdiv">
+          <div className="sidenav">
+          <Users player1="You" player2="Your Friend" />
           </div>
-        );
+          <Results simularityScore={simularityScore}
+                    sharedGenres={sharedGenres}
+                    recGenres={recGenres}
+                    sharedArtists={sharedArtists}
+                    recArtists={recArtists}
+                    sharedSongs={sharedSongs}
+                    recSongs={recSongs}/>
+        </div>
+      );
     }
 }
 

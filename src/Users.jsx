@@ -14,14 +14,18 @@ class Users extends React.Component{
         return (
             <div className="players">
                 <div className="player1">
-                    You <br/>{player1}
+                    <b>User 1</b>
+                    <br/>
+                    {player1}
                 </div>
                 <div className="player2">
-                    Your friend <br/> {player2}
+                    <b>User 2</b>
+                    <br/>
+                    {player2}
                 </div>
-                <div className="button">
-                    play a game button here
-                </div>
+                <button className="play_button">
+                    Play
+                </button>
             </div>
         )
     }

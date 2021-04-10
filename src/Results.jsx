@@ -2,9 +2,9 @@ import logo from './logo.svg';
 import './HomePage.css';
 import React from 'react';
 class Results extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state  = {
+    this.state = {
       simularityScore: this.props.simularityScore,
       sharedGenres: this.props.sharedGenres,
       recGenres: this.props.recGenres,
@@ -13,40 +13,38 @@ class Results extends React.Component {
       sharedSongs: this.props.sharedSongs,
       recSongs: this.props.recSongs
     }
-}
-  render(){
-    const {simularityScore, sharedGenres, recGenres, sharedArtists, recArtists, sharedSongs, recSongs} = this.state;
+  }
+  render() {
+    const { simularityScore, sharedGenres, recGenres, sharedArtists, recArtists, sharedSongs, recSongs } = this.state;
     return (
-      <div>
+      <div className="stats-wrapper">
+        <div className="flex-container">
+          <div className="card">
+            <b>Simularity Score</b><br /> <p>{simularityScore}%</p>
+          </div>
 
+          <div className="card"><b>Shared Genres</b><br /> <p>{sharedGenres.join(', ')}</p></div>
+          <div className="card"><b>Reccomended Genres</b><br /> <p>{recGenres.join(', ')}</p></div>
 
-        
-        <div className="sim">
-           Simularity Score: {simularityScore}%
+          <div className="card"><b>Shared Artists</b><br /> <p>{sharedArtists.join(', ')}</p></div>
+          <div className="card"><b>Recommended Artists</b><br /> <p>{recArtists.join(', ')}</p></div>
+
         </div>
-
-
-
-        <div className="genres">
-          <div className="sharedGenres"><b>Shared Genres</b><br/> {sharedGenres.join(', ')}</div>
-          <div className="recGenres"><b>Reccomended Genres</b><br/> {recGenres.join(', ')}</div>
+        <div className="flex-container">
+          <div className="song_card"><b>Shared Songs</b><br /> <p>  
+            <ul>
+            {sharedSongs.map((value, index) => {
+              return <li key={index}>{value}</li>
+            })}
+          </ul></p></div>
+          <div className="song_card">
+            <b>Recommended Songs</b><br /><p>  <ul>
+              {recSongs.map((value, index) => {
+                return <li key={index}>{value}</li>
+              })}
+            </ul></p>
+          </div>
         </div>
-
-
-
-        <div className="artists">
-          <div className="sharedArtists"><b>Shared Artists</b><br/> {sharedArtists.join(', ')}</div>
-        </div>
-
-
-
-        <div className="songs">
-          <div className="sharedSongs"><b>Shared Songs</b><br/> {sharedSongs.join(', ')}</div>
-          <div className="recSongs"><b>Recommended Songs</b><br/> {recSongs.join(', ')}</div>
-        </div>
-
-
-
       </div>
     );
   }
