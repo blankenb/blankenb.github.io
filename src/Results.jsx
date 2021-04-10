@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import './Body.css';
+import './HomePage.css';
 import React from 'react';
 class Results extends React.Component {
   constructor(props){
