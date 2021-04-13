@@ -18,33 +18,42 @@ class Results extends React.Component {
     const { simularityScore, sharedGenres, recGenres, sharedArtists, recArtists, sharedSongs, recSongs } = this.state;
     return (
       <div className="stats-wrapper">
-        <div className="flex-container">
-          <div className="card">
-            <b>Simularity Score</b><br /> <p>{simularityScore}%</p>
-          </div>
+        <section id="similarity">
+          <h3 className="statistic-name">
+            Similarity:&nbsp;
+            <span className="statistic-value">{simularityScore}%</span>
+          </h3>
+        </section>
 
-          <div className="card"><b>Shared Genres</b><br /> <p>{sharedGenres.join(', ')}</p></div>
-          <div className="card"><b>Reccomended Genres</b><br /> <p>{recGenres.join(', ')}</p></div>
+        <section id="genres">
+          <button className="menu selected">Shared Genres</button>
+          <button className="menu">Recommended Genres</button>
+          <ul className="statistic-value">
+            {sharedGenres.map((value, index) => {
+              return <li key={index}>{value}</li>
+            })}
+          </ul>
+        </section>
 
-          <div className="card"><b>Shared Artists</b><br /> <p>{sharedArtists.join(', ')}</p></div>
-          <div className="card"><b>Recommended Artists</b><br /> <p>{recArtists.join(', ')}</p></div>
+        <section id="artists">
+          <button className="menu selected">Shared Artists</button>
+          <button className="menu">Recommended Artists</button>
+          <ul className="statistic-value">
+            {sharedArtists.map((value, index) => {
+              return <li key={index}>{value}</li>
+            })}
+          </ul>
+        </section>
 
-        </div>
-        <div className="flex-container">
-          <div className="song_card"><b>Shared Songs</b><br /> <p>  
-            <ul>
+        <section id="songs">
+          <button className="menu selected">Shared Songs</button>
+          <button className="menu">Recommended Songs</button>
+          <ul className="statistic-value">
             {sharedSongs.map((value, index) => {
               return <li key={index}>{value}</li>
             })}
-          </ul></p></div>
-          <div className="song_card">
-            <b>Recommended Songs</b><br /><p>  <ul>
-              {recSongs.map((value, index) => {
-                return <li key={index}>{value}</li>
-              })}
-            </ul></p>
-          </div>
-        </div>
+          </ul>
+        </section>
       </div>
     );
   }

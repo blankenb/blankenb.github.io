@@ -59,3 +59,36 @@ button.text:hover {
 button.text:disabled {
   color: #b7b7b7;
 }
+
+button.menu {
+  position: relative;
+  font-size: 1.5rem;
+  margin-right: 2.5rem;
+  transition: color 0.2s;
+  color: #b7b7b7;
+}
+button.menu.selected, button.menu:hover {
+  color: #ffffff;
+}
+button.menu::after {
+  position: absolute;
+  content: "";
+  background-color: #ffffff;
+  height: 0.2rem;
+  left: 0;
+  right: 0;
+  bottom: -0.2rem;
+  opacity: 0;
+  transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+}
+button.menu.selected::after {
+  bottom: -0.4rem;
+  opacity: 1;
+}
+
+
+button.menu:hover {
+  color: #ffffff;
+}

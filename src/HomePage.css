@@ -2,7 +2,6 @@
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -39,47 +38,48 @@
 
 .stats-wrapper {
   flex: 1;
+  box-sizing: border-box;
+  padding: 4rem;
+  overflow-x: auto;
 }
 
+.stats-wrapper section {
+  margin-bottom: 5rem;
+}
 
+#similarity {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 5rem;
+}
 
-
-.flex-container {
+ul.statistic-value {
   display: flex;
-  margin: 40px auto;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-content: flex-start;
+  overflow-x: auto;
+  margin-top: 2rem;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+}
+ul.statistic-value li {
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  width: 8em;
+  height: 8em;
+  margin-right: 2em;
+  background-color: #2d2d2d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.card, .song_card {
-  width: 120px;
-  height: 150px;
-  color: #fff;
-  background-color: #181818;
-  display: inline;
-  word-wrap: break-word;
-  font-size: 20px;
-  margin: auto 1.5em;
-  padding: 1.5em;
+#songs ul.statistic-value {
+  flex-direction: column;
 }
-
-.song_card {
-  width: 500px;
-}
-
-.song_card ul {
-  margin-top: -12px;
-  color: #818181;
-  margin-left: -18px;
-} 
-
-.song_card li {
-  margin-top: -4px
-} 
-
-.card p {
-  margin-top: 4px;
-  color: #818181;
+#songs ul.statistic-value li {
+  width: 100%;
+  height: 3rem;
+  margin-right: 0;
+  margin-bottom: 0.5em;
 }
