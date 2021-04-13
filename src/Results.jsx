@@ -1,6 +1,6 @@
-import logo from './logo.svg';
-import './HomePage.css';
 import React from 'react';
+import './HomePage.css';
+
 class Results extends React.Component {
   constructor(props) {
     super(props);

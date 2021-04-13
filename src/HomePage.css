@@ -1,6 +1,48 @@
-html {
-  background-color: #121212;
+.home-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.sidebar {
+  box-sizing: border-box;
+  background-color: #000000;
+  height: 100%;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.playlists h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0;
+}
+
+.playlist {
+  margin: 1rem 0;
+}
+
+.playlist-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+}
+
+.playlist-owner {
+  margin-top: 0.2rem;
+}
+
+
+.stats-wrapper {
+  flex: 1;
+}
+
+
+
 
 .flex-container {
   display: flex;
@@ -9,12 +51,6 @@ html {
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-content: flex-start;
-}
-
-.stats-wrapper {
-  position: absolute;
-  left: 288px;
-  width: calc(100% - 288px);
 }
 
 .card, .song_card {
@@ -33,13 +69,11 @@ html {
   width: 500px;
 }
 
-
 .song_card ul {
   margin-top: -12px;
   color: #818181;
   margin-left: -18px;
 } 
-
 
 .song_card li {
   margin-top: -4px
@@ -48,22 +82,4 @@ html {
 .card p {
   margin-top: 4px;
   color: #818181;
-} 
-
-.players > div {
-  margin: 1em 0;
-}
-
-.sidenav {
-  height: 100%;
-  width: 240px;
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #000000;
-  overflow-x: hidden;
-  color: white;
-  font-size: 24px;
-  padding: 24px;
 }

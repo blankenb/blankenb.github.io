@@ -1,5 +1,5 @@
 import React from 'react';
-import TestButton from './TestButton';
+import './SplashPage.css'
 
 class SplashPage extends React.Component {
     constructor(props) {
@@ -54,8 +54,8 @@ class SplashPage extends React.Component {
                   placeholder="Playlist URL"
                 />
                 {this.playlistsEntered() 
-                  ? <button type="submit" class="splash_button">Find Shared Tastes</button>
-                  : <button disabled type="submit" class="splash_button">Find Shared Tastes</button>
+                  ? <button type="submit" class="pill">Find Shared Tastes</button>
+                  : <button disabled type="submit" class="pill">Find Shared Tastes</button>
                 }
             </form>
           </div>

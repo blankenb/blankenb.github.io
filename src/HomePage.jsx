@@ -1,8 +1,8 @@
 import React from 'react';
-
-import Users from './Users';
-import Results from './Results';
 import './HomePage.css';
+
+import Sidebar from './Sidebar';
+import Results from './Results';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -162,10 +162,8 @@ class HomePage extends React.Component {
       var sharedSongs = ["Kendrick Lamar - Alright", "Kanye West - Ni**as in Paris", "Smash Mouth - All Star", "Outkast - Hey Ya!", "Earth, Wind & Fire - September"]
       var recSongs = ["Chief Keef - Love Sosa", "Chief Keef - Hate Bein' Sober" , "Chief Keef - Faneto", "Chief Keef - I Don't Like", "Chief Keef - Semi On Em"]
       return (
-        <div className="superdiv">
-          <div className="sidenav">
-          <Users player1="You" player2="Your Friend" />
-          </div>
+        <div className="home-page">
+          <Sidebar player1="Study Mix" player2="Vibe Mix" />
           <Results simularityScore={simularityScore}
                     sharedGenres={sharedGenres}
                     recGenres={recGenres}
