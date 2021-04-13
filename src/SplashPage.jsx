@@ -28,14 +28,18 @@ class SplashPage extends React.Component {
       this.props.setPlaylists(this.state.playlist1, this.state.playlist2);
     }
 
+    playlistsEntered = () => {
+      return this.state.playlist1 !== '' && this.state.playlist2 !== '';
+    }
+
     render() {
       // TODO: Handle playlists being the same
       // TODO: Handle invalid playlist being provided
       return (
-        <div class="banner">
-          <div class="content">
-              <h1>Welcome to Library Linker</h1> 
-              <p>Enter URLs to two Spotify playlists below to begin.</p> 
+        <div class="splash-page">
+          <h1>Welcome to Library Linker</h1>
+          <div class="playlist-enter">
+            <p>Enter the URLs of two Spotify playlists to begin</p> 
             <form onSubmit={this.handleSubmit}>
                 <input type="text" 
                   class="textbox"
@@ -49,7 +53,10 @@ class SplashPage extends React.Component {
                   onChange={this.handlePlaylist2Change} 
                   placeholder="Playlist URL"
                 />
-                <button type="submit" class="splash_button">Find Shared Tastes</button>
+                {this.playlistsEntered() 
+                  ? <button type="submit" class="splash_button">Find Shared Tastes</button>
+                  : <button disabled type="submit" class="splash_button">Find Shared Tastes</button>
+                }
             </form>
           </div>
         </div>

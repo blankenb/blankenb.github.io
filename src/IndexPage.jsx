@@ -65,21 +65,16 @@ class IndexPage extends React.Component {
     }
 
     render() {
+      console.log(this.state.accessToken);
         if (this.state.playlist1 !== '' && this.state.playlist2 !== '') {
           // DEBUG
           return (
-            <div>
-              <p>DEBUG2: {this.state.accessToken}</p>
-              <HomePage accessToken={this.state.accessToken} playlist1={this.state.playlist1} playlist2={this.state.playlist2} />;
-            </div>
+            <HomePage accessToken={this.state.accessToken} playlist1={this.state.playlist1} playlist2={this.state.playlist2} />
           )
         } else {
           // DEBUG
           return (
-            <div>
-              <p>DEBUG: {this.state.accessToken}</p>
-              <SplashPage setPlaylists={this.setPlaylists} />
-            </div>
+            <SplashPage setPlaylists={this.setPlaylists} />
           );
         }
     }

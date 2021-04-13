@@ -67,23 +67,3 @@ html {
   font-size: 24px;
   padding: 24px;
 }
-
-
-.play_button {
-  padding: 18px 40px;
-  text-align: center;
-  margin: 4em auto;
-  border-radius: 25px;
-  font-weight: 550;
-  border: none;
-  text-transform: uppercase;
-  font-weight: 70;
-  background: #1db954;
-  color: #fff;
-  cursor: pointer;
-  overflow: hidden;
-  font-family: 'Arimo', sans-serif;
-  font-size: 14px;
-  letter-spacing: 1.3px;
-  display: block;
-}
