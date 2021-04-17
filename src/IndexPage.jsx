@@ -46,42 +46,9 @@ class IndexPage extends React.Component {
       )
     }
 
-    fetchPlaylist(playlistUrl, playlistKey) {
-      let re = /playlist\/(?<playlist_id>\w+)/;
-      let match = playlistUrl.match(re);
-
-      if (match === null) {
-        return;
-      }
-      console.log("id: " + match.groups.playlist_id);
-
-      const apiUrl = `https://api.spotify.com/v1/playlists/${match.groups.playlist_id}?fields=id%2Cname%2Cowner%2Cimages`
-
-      fetch(apiUrl, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.state.accessToken
-        }
-      })
-      .then((res) => res.json())
-      .then(
-        (res) => {
-          let updateObject = {};
-          updateObject[playlistKey] = res;
-          this.setState(updateObject);
-          console.log(res);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    }
-
     setPlaylists = (playlist1Url, playlist2Url) => {
-      this.fetchPlaylist(playlist1Url, "playlist1");
-      this.fetchPlaylist(playlist2Url,  "playlist2");
+      // this.fetchPlaylist(playlist1Url, "playlist1");
+      // this.fetchPlaylist(playlist2Url,  "playlist2");
       // this.setState({
       //   playlist1: playlist1,
       //   playlist2: playlist2
@@ -106,12 +73,17 @@ class IndexPage extends React.Component {
       if (this.state.playlist1Url !== '' && this.state.playlist2Url !== '') {
         // DEBUG
         return (
-          <HomePage accessToken={this.state.accessToken} playlist1Url={this.state.playlist1Url} playlist2Url={this.state.playlist2Url} />
+          <HomePage accessToken={this.state.accessToken} 
+                    playlist1Url={this.state.playlist1Url} 
+                    playlist2Url={this.state.playlist2Url} />
         )
       } else {
         // DEBUG
         return (
-          <SplashPage setPlaylists={this.setPlaylists} />
+          <SplashPage accessToken={this.state.accessToken} 
+                      setPlaylists={this.setPlaylists} 
+                      playlist1Url={this.state.playlist1Url}
+                      playlist2Url={this.state.playlist2Url} />
         );
       }
     }
