@@ -8,7 +8,7 @@ class HomePage extends React.Component {
     constructor(props) {
       super(props);
 
-      const { accessToken, playlist1, playlist2 } = this.props; // TODO: Change to playlists
+      const { accessToken, playlist1Url, playlist2Url } = this.props; // TODO: Change to playlists
       
       // -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQAGal7mnvIYFX8h_IpWCUp9F2U3Id3vGWYnQN_eEINooQZknDCdX8sCpCYmJrnOkFw8C0EeIG4MFnGCGZ8"
 
@@ -72,6 +72,22 @@ class HomePage extends React.Component {
     fetchPlaylist(playlistKey) {
       // TODO: Support urls and not just ids
       const playlistUrl = `https://api.spotify.com/v1/playlists/${this.props[playlistKey]}?fields=id%2Cname%2Cowner%2Cimages`
+
+      fetch(playlistUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.props.accessToken
+        }
+      })
+      .then((res) => res.json())
+      .then(
+        (res) => {
+          console.log(res);
+        },
+        (err) => console.log(err)
+      );
       // fetch(playlistUrl, {
       //   method: 'GET',
       //   headers: {
