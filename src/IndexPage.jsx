@@ -77,7 +77,8 @@ class IndexPage extends React.Component {
         return (
           <HomePage accessToken={this.state.accessToken} 
                     playlist1={this.state.playlist1} 
-                    playlist2={this.state.playlist2} />
+                    playlist2={this.state.playlist2} 
+                    setPlaylists={this.setPlaylists} />
         )
       } else {
         return (

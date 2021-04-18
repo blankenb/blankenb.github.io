@@ -8,7 +8,7 @@ class HomePage extends React.Component {
     constructor(props) {
       super(props);
 
-      const { accessToken, playlist1Url, playlist2Url } = this.props; // TODO: Change to playlists
+      const { accessToken, playlist1, playlist2 } = this.props;
       
       // -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQAGal7mnvIYFX8h_IpWCUp9F2U3Id3vGWYnQN_eEINooQZknDCdX8sCpCYmJrnOkFw8C0EeIG4MFnGCGZ8"
 
@@ -67,55 +67,6 @@ class HomePage extends React.Component {
           // TODO: Handle
         }
       );
-    }
-
-    fetchPlaylist(playlistKey) {
-      // TODO: Support urls and not just ids
-      const playlistUrl = `https://api.spotify.com/v1/playlists/${this.props[playlistKey]}?fields=id%2Cname%2Cowner%2Cimages`
-
-      fetch(playlistUrl, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.props.accessToken
-        }
-      })
-      .then((res) => res.json())
-      .then(
-        (res) => {
-          console.log(res);
-        },
-        (err) => console.log(err)
-      );
-      // fetch(playlistUrl, {
-      //   method: 'GET',
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json',
-      //     'Authorization': 'Bearer ' + this.props.accessToken
-      //   }
-      // })
-      // .then((res) => res.json())
-      // .then(
-      //   (res) => {
-
-      //     // let playlists = res.items.map((playlist) => {
-      //     //   return {
-      //     //     id: playlist.id,
-      //     //     name: playlist.name
-      //     //   }
-      //     // });
-
-      //     updateObject[nextKey] = res.next;
-      //     updateObject[playlistsKey].items = updateObject[playlistsKey].items.concat(res.items);
-      //     this.fetchPlaylists(nextKey, playlistsKey, updateObject);
-      //   },
-      //   (err) => {
-      //     console.log(err);
-      //     // TODO: Handle
-      //   }
-      // );
     }
 
     // fetchPlaylists(nextKey, playlistsKey, updateObject) {
@@ -179,14 +130,16 @@ class HomePage extends React.Component {
       var recSongs = ["Chief Keef - Love Sosa", "Chief Keef - Hate Bein' Sober" , "Chief Keef - Faneto", "Chief Keef - I Don't Like", "Chief Keef - Semi On Em"]
       return (
         <div className="home-page">
-          <Sidebar player1="Study Mix" player2="Vibe Mix" />
+          <Sidebar player1="Study Mix"
+                   player2="Vibe Mix" 
+                   setPlaylists={this.props.setPlaylists}/>
           <Results simularityScore={simularityScore}
-                    sharedGenres={sharedGenres}
-                    recGenres={recGenres}
-                    sharedArtists={sharedArtists}
-                    recArtists={recArtists}
-                    sharedSongs={sharedSongs}
-                    recSongs={recSongs}/>
+                   sharedGenres={sharedGenres}
+                   recGenres={recGenres}
+                   sharedArtists={sharedArtists}
+                   recArtists={recArtists}
+                   sharedSongs={sharedSongs}
+                   recSongs={recSongs}/>
         </div>
       );
     }
