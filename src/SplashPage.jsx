@@ -5,13 +5,13 @@ class SplashPage extends React.Component {
     constructor(props) {
       super(props);
 
-      const { playlist1Url, playlist2Url } = props;
-
       this.state = {
-        playlist1Url: playlist1Url,
-        playlist2Url: playlist2Url,
+        playlist1Url: '',
+        playlist2Url: '',
         playlist1Error: null,
-        playlist2Error: null
+        playlist2Error: null,
+        playlist1: null,
+        playlist2: null
       };
     }
 
@@ -35,6 +35,8 @@ class SplashPage extends React.Component {
     }
 
     fetchPlaylist(playlistUrl, playlistKey) {
+      this.props.refreshTokenIfNecessary();
+
       let re = /playlist\/(?<playlist_id>\w+)/;
       let match = playlistUrl.match(re);
 
@@ -57,27 +59,34 @@ class SplashPage extends React.Component {
           'Authorization': 'Bearer ' + this.props.accessToken
         }
       })
-      .then((res) => res.json())
+      .then((res) => { 
+        if (!res.ok) {
+          throw new Error('404');
+        }
+
+        return res.json(); 
+      })
       .then(
         (res) => {
-          if (!res.ok) {
-            let updateObject = {};
-            updateObject[playlistKey + 'Error'] = 'Playlist not found';
-            this.setState(updateObject);
-          }
+          console.log(res);
 
           let updateObject = {};
           updateObject[playlistKey] = res;
-
-          // TODO: Set on IndexPage
-          // this.setState(updateObject);
-          console.log(res);
-        },
-        (err) => {
-          let updateObject = {};
-          updateObject[playlistKey + 'Error'] = 'Unknown error occurred';
           this.setState(updateObject);
+
+          if (this.state.playlist1 !== null && this.state.playlist2 !== null) {
+            this.props.setPlaylists(this.state.playlist1, this.state.playlist2);
+          }
+        }
+      )
+      .catch(
+        (err) => {
           console.log(err);
+
+          let updateObject = {};
+          updateObject[playlistKey + 'Error'] = err.message == '404' ? 
+            'Playlist not found' : 'Unknown error occurred'; 
+          this.setState(updateObject);
         }
       );
     }
@@ -86,14 +95,18 @@ class SplashPage extends React.Component {
       event.preventDefault();
       console.log("handling submit");
 
+      this.setState({
+        playlist1: null,
+        playlist2: null
+      });
+
       this.fetchPlaylist(this.state.playlist1Url, 'playlist1');
       this.fetchPlaylist(this.state.playlist2Url, 'playlist2');
       // this.props.setPlaylists(this.state.playlist1Url, this.state.playlist2Url);
     }
 
     render() {
-      // TODO: Handle playlists being the same
-      // TODO: Handle invalid playlist being provided
+      // TODO: Handle playlists being the same ?
       return (
         <div className="splash-page">
           <h1>Welcome to Library Linker</h1>

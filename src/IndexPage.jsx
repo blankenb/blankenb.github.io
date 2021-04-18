@@ -12,8 +12,6 @@ class IndexPage extends React.Component {
         accessToken: null,
         validUntil: null,
         fetchedPlaylists: false,
-        playlist1Url: '',
-        playlist2Url: '',
         playlist1: null,
         playlist2: null
       };
@@ -46,13 +44,18 @@ class IndexPage extends React.Component {
       )
     }
 
-    setPlaylists = (playlist1Url, playlist2Url) => {
-      // this.fetchPlaylist(playlist1Url, "playlist1");
-      // this.fetchPlaylist(playlist2Url,  "playlist2");
-      // this.setState({
-      //   playlist1: playlist1,
-      //   playlist2: playlist2
-      // });
+    refreshTokenIfNecessary = () => {
+      if (this.state.validUntil <= Date.now()) {
+        this.getAuthToken();
+      }
+    }
+
+    setPlaylists = (playlist1, playlist2) => {
+      console.log("setting playlists");
+      this.setState({
+        playlist1: playlist1,
+        playlist2: playlist2
+      });
     }
 
     componentDidMount() {
@@ -70,20 +73,17 @@ class IndexPage extends React.Component {
 
     render() {
       console.log(this.state.accessToken);
-      if (this.state.playlist1Url !== '' && this.state.playlist2Url !== '') {
-        // DEBUG
+      if (this.state.playlist1 !== null && this.state.playlist2 !== null) {
         return (
           <HomePage accessToken={this.state.accessToken} 
-                    playlist1Url={this.state.playlist1Url} 
-                    playlist2Url={this.state.playlist2Url} />
+                    playlist1={this.state.playlist1} 
+                    playlist2={this.state.playlist2} />
         )
       } else {
-        // DEBUG
         return (
-          <SplashPage accessToken={this.state.accessToken} 
-                      setPlaylists={this.setPlaylists} 
-                      playlist1Url={this.state.playlist1Url}
-                      playlist2Url={this.state.playlist2Url} />
+          <SplashPage accessToken={this.state.accessToken}
+                      setPlaylists={this.setPlaylists}
+                      refreshTokenIfNecessary={this.refreshTokenIfNecessary} />
         );
       }
     }
