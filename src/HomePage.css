@@ -45,6 +45,7 @@
   box-sizing: border-box;
   padding: 4rem;
   overflow-x: auto;
+  overflow-y: auto;
 }
 
 .stats-wrapper section {
@@ -102,19 +103,23 @@ ul.statistic-value li {
   border-radius: 1rem;
 }
 
+#songs {
+  margin-bottom: 4rem;
+}
+
 #songs ul.statistic-value {
   width: 100%;
   flex-direction: column;
   overflow-x: visible;
 }
 #songs ul.statistic-value li {
+  position: relative;
   box-sizing: border-box;
   width: 100%;
   text-align: left;
-  height: 3rem;
+  height: 3.5rem;
   margin-right: 0;
   margin-bottom: 0.7em;
-  padding: 0 2rem;
   box-shadow: 0 0 3px 3px transparent;
   transition: box-shadow 0.3s, background-color 0.3s;
 }
@@ -122,7 +127,22 @@ ul.statistic-value li {
   box-shadow: 0 0 3px 3px #2d2d2d;
   background-color: #646464;
 }
+#songs ul.statistic-value li::after {
+  pointer-events: none;
+  position: absolute;
+  content: "Open in Spotify";
+  font-size: 1rem;
+  opacity: 0;
+  right: 2rem;
+  transition: opacity 0.3s, right 0.3s;
+}
+#songs ul.statistic-value li:hover::after {
+  opacity: 1;
+  right: 2.7rem;
+}
+
 #songs li a {
+  position: relative;
   width: 100%;
   height: 100%;
   color: #ffffff;
@@ -130,9 +150,42 @@ ul.statistic-value li {
   display: flex;
   align-items: center;
 }
+#songs li a::after {
+  pointer-events: none;
+  position: absolute;
+  content: "";
+  background-image: url("./caret.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 10px;
+  height: 13px;
+  top: 50%;
+  transform: translate(-50%);
+  -webkit-transform: translateY(-50%);
+  opacity: 0;
+  right: 2rem;
+  transition: opacity 0.3s, right 0.3s;
+}
+#songs li a:hover::after {
+  opacity: 1;
+  right: 1.5rem;
+  transition: opacity 0.3s, right 0.3s;
+}
+
+#songs .song-image {
+  margin-left: calc((3.5rem - 3rem) / 2); /* li (height - this height) / 2*/
+  width: 3rem;
+  height: 3rem;
+  background-size: cover;
+  background-color: #191919;
+}
 #songs .artist-names {
+  margin-left: 2rem;
   width: 20rem;
+  font-weight: 500;
 }
 #songs .song-name {
   font-weight: 400;
+  font-size: 1rem;
 }

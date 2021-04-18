@@ -149,15 +149,13 @@ class Results extends React.Component {
 
                   return (
                     <li key={index}>
-                      <a href={song.url}>
+                      <a href={song.url} target="_blank">
+                        <div className="song-image" style={{backgroundImage: `url(${song.imageUrl})`}}></div>
                         <div className="artist-names">
                           {artistNames}
                         </div>
                         <div className="song-name">
                           {song.name}
-                        </div>
-                        <div className="song-name">
-                          {song.imageUrl}
                         </div>
                       </a>
                     </li>
