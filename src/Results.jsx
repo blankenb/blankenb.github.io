@@ -124,7 +124,11 @@ class Results extends React.Component {
               </div>
             : <ul className="statistic-value">
                 { artists.map((artist, index) => {
-                  return <li key={index}>{artist.name}</li>
+                  return (
+                    <li key={index} style={{backgroundImage: `url(${artist.imageUrl})`}}>
+                      {artist.name}
+                    </li>
+                  )
                 })}
               </ul>
           }
@@ -151,6 +155,9 @@ class Results extends React.Component {
                         </div>
                         <div className="song-name">
                           {song.name}
+                        </div>
+                        <div className="song-name">
+                          {song.imageUrl}
                         </div>
                       </a>
                     </li>

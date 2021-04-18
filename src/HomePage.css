@@ -88,7 +88,9 @@ ul.statistic-value li {
   height: 8em;
   margin-right: 2em;
   background-color: #2d2d2d;
+  background-size: cover;
   display: flex;
+  text-align: center;
   justify-content: center;
   align-items: center;
 }
@@ -108,6 +110,7 @@ ul.statistic-value li {
 #songs ul.statistic-value li {
   box-sizing: border-box;
   width: 100%;
+  text-align: left;
   height: 3rem;
   margin-right: 0;
   margin-bottom: 0.7em;

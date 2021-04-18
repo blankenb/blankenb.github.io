@@ -19,8 +19,8 @@ class HomePage extends React.Component {
           items: [],
 
           // maps
-          songs: {},    // { id: { name, artistNames, url } }
-          artists: {},  // { id: { name, url, count } }
+          songs: {},    // { id: { name, artistNames, url, imageUrl } }
+          artists: {},  // { id: { name, url, imageUrl, count } }
           genres: {},   // { name: count }
 
           // sets of ids of maps
@@ -86,6 +86,25 @@ class HomePage extends React.Component {
         }
       );
     }
+    
+    getSmallImageUrl = (images) => {
+      let smallest = { height: 999999 };
+      for (const image of images) {
+        if (image.height < smallest.height) {
+          smallest = image;
+        }
+      }
+      return smallest.url;
+    }
+
+    getMediumImageUrl = (images) => {
+      for (const image of images) {
+        if (image.height >= 200 && image.height <= 400) {
+          return image.url;
+        }
+      }
+      return images[images.length - 1].url;
+    }
 
     formatData = (playlistKey) => {
       let updateObject = {};
@@ -98,7 +117,8 @@ class HomePage extends React.Component {
           songs[track.track.id] = {
             name: track.track.name,
             artistNames: track.track.artists.map(artist => artist.name),
-            url: track.track.external_urls.spotify
+            url: track.track.external_urls.spotify,
+            imageUrl: this.getSmallImageUrl(track.track.album.images)
           }
         }
       }
@@ -115,6 +135,7 @@ class HomePage extends React.Component {
             artists[artist.id] = {
               name: artist.name,
               url: artist.external_urls.spotify,
+              imageUrl: '',
               count: 1
             };
           }
@@ -146,10 +167,15 @@ class HomePage extends React.Component {
                 genres[genre] = 1;
               }
             }
+
+            updateObject[playlistKey]['artists'][artist.id].imageUrl = this.getMediumImageUrl(artist.images);
           }
 
           updateObject[playlistKey]['genres'] = genres;
           updateObject[playlistKey]['genreSet'] = new Set(Object.keys(genres));
+          
+          
+          console.log(res);
 
           this.setState(updateObject);
     
@@ -204,6 +230,7 @@ class HomePage extends React.Component {
           return {
             name: this.state.playlist1Data.artists[id].name,
             url: this.state.playlist1Data.artists[id].url,
+            imageUrl: this.state.playlist1Data.artists[id].imageUrl,
             p1Count: this.state.playlist1Data.artists[id].count,
             p2Count: this.state.playlist2Data.artists[id].count
           }
@@ -250,13 +277,7 @@ class HomePage extends React.Component {
     }
 
     render(){
-      var simularityScore = 69.420
-      var sharedGenres = ["Hip-Hop", "Jazz", "Funk", "Soul", "R&B"]
-      var recGenres = ["Rock", "Pop"]
-      var sharedArtists = ["Kendrick Lamar", "Kanye West"]
-      var recArtists = ["Chief Keef", "Kanye East"]
-      var sharedSongs = ["Kendrick Lamar - Alright", "Kanye West - Ni**as in Paris", "Smash Mouth - All Star", "Outkast - Hey Ya!", "Earth, Wind & Fire - September"]
-      var recSongs = ["Chief Keef - Love Sosa", "Chief Keef - Hate Bein' Sober" , "Chief Keef - Faneto", "Chief Keef - I Don't Like", "Chief Keef - Semi On Em"]
+      var simularityScore = 69.420;
       return (
         <div className="home-page">
           <Sidebar playlist1={this.props.playlist1}
