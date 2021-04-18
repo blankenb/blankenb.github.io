@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 class Sidebar extends React.Component{
     constructor(props){
@@ -20,12 +20,12 @@ class Sidebar extends React.Component{
                             <button className="text" onClick={this.resetPlaylist}>Change</button>
                         </div>
                         <div className="playlist">
-                            <div className="playlist-name">{this.props.player1}</div>
-                            <div className="playlist-owner">Owned by <b>Nick</b></div>
+                            <div className="playlist-name">{this.props.playlist1.name}</div>
+                            <div className="playlist-owner">Owned by <b>{this.props.playlist1.owner.display_name}</b></div>
                         </div>
                         <div className="playlist">
-                            <div className="playlist-name">{this.props.player2}</div>
-                            <div className="playlist-owner">Owned by <b>Beau</b></div>
+                            <div className="playlist-name">{this.props.playlist2.name}</div>
+                            <div className="playlist-owner">Owned by <b>{this.props.playlist2.owner.display_name}</b></div>
                         </div>
                     </div>
                 </div>

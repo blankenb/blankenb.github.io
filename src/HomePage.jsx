@@ -130,8 +130,8 @@ class HomePage extends React.Component {
       var recSongs = ["Chief Keef - Love Sosa", "Chief Keef - Hate Bein' Sober" , "Chief Keef - Faneto", "Chief Keef - I Don't Like", "Chief Keef - Semi On Em"]
       return (
         <div className="home-page">
-          <Sidebar player1="Study Mix"
-                   player2="Vibe Mix" 
+          <Sidebar playlist1={this.props.playlist1}
+                   playlist2={this.props.playlist2}
                    setPlaylists={this.props.setPlaylists}/>
           <Results simularityScore={simularityScore}
                    sharedGenres={sharedGenres}
