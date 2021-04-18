@@ -18,19 +18,19 @@ class Results extends React.Component {
   }
 
   selectShared = () => {
-    if (this.state.menuSelected != 'shared') {
+    if (this.state.menuSelected !== 'shared') {
       this.setState({ menuSelected: 'shared' });
     }
   }
 
   selectPlaylist1Recommended = () => {
-    if (this.state.menuSelected != 'p1') {
+    if (this.state.menuSelected !== 'p1') {
       this.setState({ menuSelected: 'p1' });
     }
   }
 
   selectPlaylist2Recommended = () => {
-    if (this.state.menuSelected != 'p2') {
+    if (this.state.menuSelected !== 'p2') {
       this.setState({ menuSelected: 'p2' });
     }
   }
@@ -39,38 +39,50 @@ class Results extends React.Component {
     return ((r * 299) + (g * 587) + (b * 114)) / 1000; // from https://www.w3.org/WAI/ER/WD-AERT/#color-contrast
   }
 
-  getRandomColorStyling = () =>  {
+  getRandomColorStyling = () => {
     var r = Math.floor(Math.random() * 256);
     var g = Math.floor(Math.random() * 256);
     var b = Math.floor(Math.random() * 256);
 
     let brightness = this.getBrightness(r, g, b);
     return { 
-      'background-color': `rgb(${r}, ${g}, ${b})`,
-      'color': brightness >= 128 ? '#2d2d2d' : '#ffffff'
+      backgroundColor: `rgb(${r}, ${g}, ${b})`,
+      color: brightness >= 128 ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)'
+    }
+  }
+
+  getSource = () => {
+    // In p2 but not p1
+    if (this.state.menuSelected !== 'p1') {
+    }
+    // In p1 but not p2
+    else if (this.state.menuSelected !== 'p2') {
+    }
+    // Shared
+    else {
+      
     }
   }
 
   render() {
     const simularityScore = this.props.simularityScore; // TODO
-    const sharedGenres = this.props.sharedGenres; // TODO
-    const sharedArtists = this.props.sharedArtists; // TODO
-    const sharedSongs = this.props.sharedSongs; // TODO
 
-    console.log(sharedArtists);
+    const genres = this.props.sources[this.state.menuSelected].genres;
+    const artists = this.props.sources[this.state.menuSelected].artists;
+    const songs = this.props.sources[this.state.menuSelected].songs
 
     return (
       <div className="stats-wrapper">
         <section id="menu">
-          <button className={`menu ${this.state.menuSelected == 'shared' ? "selected" : ""}`}
+          <button className={`menu ${this.state.menuSelected === 'shared' ? "selected" : ""}`}
                   onClick={this.selectShared}>
             Shared
           </button>
-          <button className={`menu ${this.state.menuSelected == 'p1' ? "selected" : ""}`}
+          <button className={`menu ${this.state.menuSelected === 'p1' ? "selected" : ""}`}
                   onClick={this.selectPlaylist1Recommended}>
             Recommended for {this.props.playlist1.name}
           </button>
-          <button className={`menu ${this.state.menuSelected == 'p2' ? "selected" : ""}`}
+          <button className={`menu ${this.state.menuSelected === 'p2' ? "selected" : ""}`}
                   onClick={this.selectPlaylist2Recommended}>
             Recommended for {this.props.playlist2.name}
           </button>
@@ -85,11 +97,16 @@ class Results extends React.Component {
 
         <section id="genres">
           <h2 className="section-name">Genres</h2>
-          { sharedGenres.length === 0
-            ? <div className="none-shared">No shared genres :(</div>
+          { genres.length === 0
+            ? <div className="no-values">
+                { this.state.menuSelected === 'shared' 
+                  ? 'No shared genres :('
+                  : 'Playlist is empty :('
+                }
+              </div>
             : <ul className="statistic-value">
-                {sharedGenres.map((value, index) => {
-                  return <li key={index} style={this.getRandomColorStyling()}>{value}</li>
+                { genres.map((genre, index) => {
+                  return <li key={index} style={this.getRandomColorStyling()}>{genre.name}</li>
                 })}
               </ul>
           }
@@ -98,11 +115,16 @@ class Results extends React.Component {
         <section id="artists">
           <h2 className="section-name">Artists</h2>
 
-          { sharedArtists.length === 0
-            ? <div className="none-shared">No shared artists :(</div>
+          { artists.length === 0
+            ? <div className="no-values">
+                { this.state.menuSelected === 'shared' 
+                  ? 'No shared artists :('
+                  : 'Playlist is empty :('
+                }
+              </div>
             : <ul className="statistic-value">
-                {sharedArtists.map((value, index) => {
-                  return <li key={index}>{value}</li>
+                { artists.map((artist, index) => {
+                  return <li key={index}>{artist.name}</li>
                 })}
               </ul>
           }
@@ -110,11 +132,29 @@ class Results extends React.Component {
 
         <section id="songs">
           <h2 className="section-name">Songs</h2>
-          { sharedSongs.length === 0
-            ? <div className="none-shared">No shared songs :(</div>
+          { songs.length === 0
+            ? <div className="no-values">
+                { this.state.menuSelected === 'shared' 
+                  ? 'No shared songs :('
+                  : 'Playlist is empty :('
+                }
+              </div>
             : <ul className="statistic-value">
-                {sharedSongs.map((value, index) => {
-                  return <li key={index}>{value}</li>
+                { songs.map((song, index) => {
+                  let artistNames = song.artistNames.join(', ');
+
+                  return (
+                    <li key={index}>
+                      <a href={song.url}>
+                        <div className="artist-names">
+                          {artistNames}
+                        </div>
+                        <div className="song-name">
+                          {song.name}
+                        </div>
+                      </a>
+                    </li>
+                  )
                 })}
               </ul>
           }

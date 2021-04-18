@@ -13,17 +13,22 @@ class HomePage extends React.Component {
       // -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQAGal7mnvIYFX8h_IpWCUp9F2U3Id3vGWYnQN_eEINooQZknDCdX8sCpCYmJrnOkFw8C0EeIG4MFnGCGZ8"
 
       this.state = {
-        next1: `https://api.spotify.com/v1/playlists/${playlist1.id}/tracks?fields=next%2Citems(track(name%2Cid%2Cartists%2Cexternal_urls%2Cpreview_url))&limit=100`,
+        next1: `https://api.spotify.com/v1/playlists/${playlist1.id}/tracks?fields=next%2Citems(track(name%2Cid%2Cartists%2Cexternal_urls%2Cpreview_url%2Calbum(images)))&limit=100`,
         playlist1Data: {
+          // raw
           items: [],
-          songs: {},    // { id: name }
-          artists: {},  // { id: { name, count } }
+
+          // maps
+          songs: {},    // { id: { name, artistNames, url } }
+          artists: {},  // { id: { name, url, count } }
           genres: {},   // { name: count }
+
+          // sets of ids of maps
           songSet: null,
           artistSet: null,
           genreSet: null
         },
-        next2: `https://api.spotify.com/v1/playlists/${playlist2.id}/tracks?fields=next%2Citems(track(name%2Cid%2Cartists%2Cexternal_urls%2Cpreview_url))&limit=100`,
+        next2: `https://api.spotify.com/v1/playlists/${playlist2.id}/tracks?fields=next%2Citems(track(name%2Cid%2Cartists%2Cexternal_urls%2Cpreview_url%2Calbum(images)))&limit=100`,
         playlist2Data: {
           items: [],
           songs: {},
@@ -90,7 +95,11 @@ class HomePage extends React.Component {
       let songs = {};
       for (const track of this.state[playlistKey].items) {
         if (!songs.hasOwnProperty(track.track.id)) {
-          songs[track.track.id] = track.track.name;
+          songs[track.track.id] = {
+            name: track.track.name,
+            artistNames: track.track.artists.map(artist => artist.name),
+            url: track.track.external_urls.spotify
+          }
         }
       }
       updateObject[playlistKey]['songs'] = songs;
@@ -105,6 +114,7 @@ class HomePage extends React.Component {
           } else {
             artists[artist.id] = {
               name: artist.name,
+              url: artist.external_urls.spotify,
               count: 1
             };
           }
@@ -115,6 +125,7 @@ class HomePage extends React.Component {
 
       console.log("Setting genres for " + playlistKey);
       let genres = {};
+      // TODO: Get artist image
       let artistIds = Object.keys(artists).slice(0, 50).join("%2C"); // TODO: Use all artists not just first 50
       fetch(`https://api.spotify.com/v1/artists?ids=${artistIds}`, {
         method: 'GET',
@@ -165,10 +176,15 @@ class HomePage extends React.Component {
           let aCount = this.state.playlist1Data.genres[a] + this.state.playlist2Data.genres[a];
           let bCount = this.state.playlist1Data.genres[b] + this.state.playlist2Data.genres[b];
           return bCount - aCount;
+        })
+        .map(name => {
+          return {
+            name: name,
+            p1Count: this.state.playlist1Data.genres[name],
+            p2Count: this.state.playlist2Data.genres[name]
+          }
         });
       }
-
-      // TODO: Map, include count info
     }
 
     getArtistIntersection = () => {
@@ -184,10 +200,15 @@ class HomePage extends React.Component {
           let bCount = this.state.playlist1Data.artists[b].count + this.state.playlist2Data.artists[b].count;
           return bCount - aCount;
         })
-        .map(x => this.state.playlist1Data.artists[x].name);
+        .map(id => {
+          return {
+            name: this.state.playlist1Data.artists[id].name,
+            url: this.state.playlist1Data.artists[id].url,
+            p1Count: this.state.playlist1Data.artists[id].count,
+            p2Count: this.state.playlist2Data.artists[id].count
+          }
+        });
       }
-
-      // TODO: Map, include count info
     }
 
     getSongIntersection = () => {
@@ -198,10 +219,28 @@ class HomePage extends React.Component {
           [...this.state.playlist1Data.songSet]
           .filter(x => this.state.playlist2Data.songSet.has(x))
         ))
-        .map(x => this.state.playlist1Data.songs[x]);
+        .map(id => this.state.playlist1Data.songs[id]);
       }
+    }
 
-      // TODO: Map, include count info
+    generateSources = () => {
+      return {
+        shared: {
+          genres: this.getGenreIntersection(),
+          artists: this.getArtistIntersection(),
+          songs: this.getSongIntersection()
+        },
+        p1: { // todo
+          genres: [],
+          artists: [],
+          songs: []
+        },
+        p2: { // todo
+          genres: [],
+          artists: [],
+          songs: []
+        }
+      }
     }
 
     componentDidMount = () => {
@@ -228,12 +267,7 @@ class HomePage extends React.Component {
                    playlist1Data={this.state.playlist1Data}
                    playlist2Data={this.state.playlist2Data}
                    simularityScore={simularityScore}
-                   sharedGenres={this.getGenreIntersection()}
-                   recGenres={recGenres}
-                   sharedArtists={this.getArtistIntersection()}
-                   recArtists={recArtists}
-                   sharedSongs={this.getSongIntersection()}
-                   recSongs={recSongs}/>
+                   sources={this.generateSources()} />
         </div>
       );
     }

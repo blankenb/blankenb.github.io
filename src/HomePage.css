@@ -67,7 +67,7 @@
   margin: 0;
 }
 
-.none-shared {
+.no-values {
   margin-top: 1.5rem;
   font-weight: 500;
 }
@@ -101,11 +101,35 @@ ul.statistic-value li {
 }
 
 #songs ul.statistic-value {
+  width: 100%;
   flex-direction: column;
+  overflow-x: visible;
 }
 #songs ul.statistic-value li {
+  box-sizing: border-box;
   width: 100%;
   height: 3rem;
   margin-right: 0;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.7em;
+  padding: 0 2rem;
+  box-shadow: 0 0 3px 3px transparent;
+  transition: box-shadow 0.3s, background-color 0.3s;
+}
+#songs ul.statistic-value li:hover {
+  box-shadow: 0 0 3px 3px #2d2d2d;
+  background-color: #646464;
+}
+#songs li a {
+  width: 100%;
+  height: 100%;
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+#songs .artist-names {
+  width: 20rem;
+}
+#songs .song-name {
+  font-weight: 400;
 }
