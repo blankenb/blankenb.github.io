@@ -57,6 +57,8 @@ class Results extends React.Component {
     const sharedArtists = this.props.sharedArtists; // TODO
     const sharedSongs = this.props.sharedSongs; // TODO
 
+    console.log(sharedArtists);
+
     return (
       <div className="stats-wrapper">
         <section id="menu">
@@ -83,29 +85,39 @@ class Results extends React.Component {
 
         <section id="genres">
           <h2 className="section-name">Genres</h2>
-          <ul className="statistic-value">
-            {sharedGenres.map((value, index) => {
-              return <li key={index} style={this.getRandomColorStyling()}>{value}</li>
-            })}
-          </ul>
+          { sharedGenres.length === 0
+            ? <div className="none-shared">No shared genres :(</div>
+            : <ul className="statistic-value">
+                {sharedGenres.map((value, index) => {
+                  return <li key={index} style={this.getRandomColorStyling()}>{value}</li>
+                })}
+              </ul>
+          }
         </section>
 
         <section id="artists">
           <h2 className="section-name">Artists</h2>
-          <ul className="statistic-value">
-            {sharedArtists.map((value, index) => {
-              return <li key={index}>{value}</li>
-            })}
-          </ul>
+
+          { sharedArtists.length === 0
+            ? <div className="none-shared">No shared artists :(</div>
+            : <ul className="statistic-value">
+                {sharedArtists.map((value, index) => {
+                  return <li key={index}>{value}</li>
+                })}
+              </ul>
+          }
         </section>
 
         <section id="songs">
           <h2 className="section-name">Songs</h2>
-          <ul className="statistic-value">
-            {sharedSongs.map((value, index) => {
-              return <li key={index}>{value}</li>
-            })}
-          </ul>
+          { sharedSongs.length === 0
+            ? <div className="none-shared">No shared songs :(</div>
+            : <ul className="statistic-value">
+                {sharedSongs.map((value, index) => {
+                  return <li key={index}>{value}</li>
+                })}
+              </ul>
+          }
         </section>
       </div>
     );

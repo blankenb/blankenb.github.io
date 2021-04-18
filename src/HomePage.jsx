@@ -16,8 +16,9 @@ class HomePage extends React.Component {
         next1: `https://api.spotify.com/v1/playlists/${playlist1.id}/tracks?fields=next%2Citems(track(name%2Cid%2Cartists%2Cexternal_urls%2Cpreview_url))&limit=100`,
         playlist1Data: {
           items: [],
-          artists: {},
-          genres: {},
+          songs: {},    // { id: name }
+          artists: {},  // { id: { name, count } }
+          genres: {},   // { name: count }
           songSet: null,
           artistSet: null,
           genreSet: null
@@ -25,6 +26,7 @@ class HomePage extends React.Component {
         next2: `https://api.spotify.com/v1/playlists/${playlist2.id}/tracks?fields=next%2Citems(track(name%2Cid%2Cartists%2Cexternal_urls%2Cpreview_url))&limit=100`,
         playlist2Data: {
           items: [],
+          songs: {},
           artists: {},
           genres: {},
           songSet: null,
@@ -85,11 +87,14 @@ class HomePage extends React.Component {
       updateObject[playlistKey] = this.state[playlistKey];
 
       console.log("Setting songs for " + playlistKey);
-      let songSet = new Set();
+      let songs = {};
       for (const track of this.state[playlistKey].items) {
-        songSet.add(track.track.id);
+        if (!songs.hasOwnProperty(track.track.id)) {
+          songs[track.track.id] = track.track.name;
+        }
       }
-      updateObject[playlistKey]['songSet'] = songSet;
+      updateObject[playlistKey]['songs'] = songs;
+      updateObject[playlistKey]['songSet'] = new Set(Object.keys(songs));
 
       console.log("Setting artists for " + playlistKey);
       let artists = {};
@@ -154,11 +159,49 @@ class HomePage extends React.Component {
       } else {
         return Array.from(new Set(
           [...this.state.playlist1Data.genreSet]
-          .filter(x => this.state.playlist1Data.genreSet.has(x))
-        ));
+          .filter(x => this.state.playlist2Data.genreSet.has(x))
+        ))
+        .sort((a, b) => {
+          let aCount = this.state.playlist1Data.genres[a] + this.state.playlist2Data.genres[a];
+          let bCount = this.state.playlist1Data.genres[b] + this.state.playlist2Data.genres[b];
+          return bCount - aCount;
+        });
       }
 
-      // TODO: Sort by count
+      // TODO: Map, include count info
+    }
+
+    getArtistIntersection = () => {
+      if (this.state.playlist1Data.artistSet === null || this.state.playlist2Data.artistSet === null) {
+        return [];
+      } else {
+        return Array.from(new Set(
+          [...this.state.playlist1Data.artistSet]
+          .filter(x => this.state.playlist2Data.artistSet.has(x))
+        ))
+        .sort((a, b) => {
+          let aCount = this.state.playlist1Data.artists[a].count + this.state.playlist2Data.artists[a].count;
+          let bCount = this.state.playlist1Data.artists[b].count + this.state.playlist2Data.artists[b].count;
+          return bCount - aCount;
+        })
+        .map(x => this.state.playlist1Data.artists[x].name);
+      }
+
+      // TODO: Map, include count info
+    }
+
+    getSongIntersection = () => {
+      if (this.state.playlist1Data.songSet === null || this.state.playlist2Data.songSet === null) {
+        return [];
+      } else {
+        return Array.from(new Set(
+          [...this.state.playlist1Data.songSet]
+          .filter(x => this.state.playlist2Data.songSet.has(x))
+        ))
+        .map(x => this.state.playlist1Data.songs[x]);
+      }
+
+      // TODO: Map, include count info
     }
 
     componentDidMount = () => {
@@ -187,9 +230,9 @@ class HomePage extends React.Component {
                    simularityScore={simularityScore}
                    sharedGenres={this.getGenreIntersection()}
                    recGenres={recGenres}
-                   sharedArtists={sharedArtists}
+                   sharedArtists={this.getArtistIntersection()}
                    recArtists={recArtists}
-                   sharedSongs={sharedSongs}
+                   sharedSongs={this.getSongIntersection()}
                    recSongs={recSongs}/>
         </div>
       );

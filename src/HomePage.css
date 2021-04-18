@@ -67,6 +67,11 @@
   margin: 0;
 }
 
+.none-shared {
+  margin-top: 1.5rem;
+  font-weight: 500;
+}
+
 ul.statistic-value {
   display: flex;
   overflow-x: auto;
