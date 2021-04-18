@@ -103,7 +103,7 @@ class Results extends React.Component {
             ? <div className="no-values">
                 { this.state.menuSelected === 'shared' 
                   ? 'No shared genres :('
-                  : 'Playlist is empty :('
+                  : 'Playlist already shares all genres :)'
                 }
               </div>
             : <ul className="statistic-value">
@@ -121,7 +121,7 @@ class Results extends React.Component {
             ? <div className="no-values">
                 { this.state.menuSelected === 'shared' 
                   ? 'No shared artists :('
-                  : 'Playlist is empty :('
+                  : 'Playlist already shares all artists :)'
                 }
               </div>
             : <ul className="statistic-value">
@@ -129,13 +129,11 @@ class Results extends React.Component {
                   return (
                     <li key={index} style={{backgroundImage: `linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${artist.imageUrl})`}}>
                       <a href={artist.url} target="_blank" className="artist-link">
-                        <span className="artist-name-wrapper-wrapper">
-                          <span className="artist-name-wrapper">
-                            <span className="artist-name">
-                              {artist.name}
-                            </span>
-                          </span>
-                        </span>
+                        <div className="artist-name-wrapper">
+                          <div className="artist-name">
+                            {artist.name}
+                          </div>
+                        </div>
                       </a>
                     </li>
                   )
@@ -150,7 +148,7 @@ class Results extends React.Component {
             ? <div className="no-values">
                 { this.state.menuSelected === 'shared' 
                   ? 'No shared songs :('
-                  : 'Playlist is empty :('
+                  : 'Playlist already shares all songs :)'
                 }
               </div>
             : <ul className="statistic-value">

@@ -37,6 +37,23 @@ class HomePage extends React.Component {
           songSet: null,
           artistSet: null,
           genreSet: null
+        },
+        sources: {
+          shared: {
+            genres: [],
+            artists: [],
+            songs: []
+          },
+          p1: {
+            genres: [],
+            artists: [],
+            songs: []
+          },
+          p2: {
+            genres: [],
+            artists: [],
+            songs: []
+          }
         }
       };
     }
@@ -161,6 +178,7 @@ class HomePage extends React.Component {
         console.log("Finished collecting extra data for " + playlistKey);
         this.setState(updateObject);
         console.log(this.state);
+        this.setSources();
         return;
       }
 
@@ -326,24 +344,43 @@ class HomePage extends React.Component {
       }
     }
 
-    generateSources = () => {
-      return {
-        shared: {
-          genres: this.getGenreIntersection(),
-          artists: this.getArtistIntersection(),
-          songs: this.getSongIntersection()
-        },
-        p1: {
-          genres: this.getGenreDifference('playlist2Data', 'playlist1Data'),
-          artists: this.getArtistDifference('playlist2Data', 'playlist1Data'),
-          songs: this.getSongDifference('playlist2Data', 'playlist1Data')
-        },
-        p2: {
-          genres: this.getGenreDifference('playlist1Data', 'playlist2Data'),
-          artists: this.getArtistDifference('playlist1Data', 'playlist2Data'),
-          songs: this.getSongDifference('playlist1Data', 'playlist2Data')
-        }
+    getSimilarityScore = () => {
+      if (this.state.playlist1Data.genreSet === null || this.state.playlist1Data.artistSet === null ||
+          this.state.playlist2Data.genreSet === null || this.state.playlist2Data.artistSet === null) {
+        return 0;
       }
+
+      // 80% proportion of shared artists
+      // 20% proportion of shared genres
+      let genreProportion = this.state.sources.shared.genres.length / 
+        Math.min(this.state.playlist1Data.genreSet.size, 
+                 this.state.playlist2Data.genreSet.size);
+      let artistProportion = this.state.sources.shared.artists.length / 
+        Math.min(this.state.playlist1Data.artistSet.size, 
+                this.state.playlist2Data.artistSet.size);
+      return (80*artistProportion + 20*genreProportion).toFixed(2);
+    }
+
+    setSources = () => {
+      this.setState({
+        sources: {
+          shared: {
+            genres: this.getGenreIntersection(),
+            artists: this.getArtistIntersection(),
+            songs: this.getSongIntersection()
+          },
+          p1: {
+            genres: this.getGenreDifference('playlist2Data', 'playlist1Data'),
+            artists: this.getArtistDifference('playlist2Data', 'playlist1Data'),
+            songs: this.getSongDifference('playlist2Data', 'playlist1Data')
+          },
+          p2: {
+            genres: this.getGenreDifference('playlist1Data', 'playlist2Data'),
+            artists: this.getArtistDifference('playlist1Data', 'playlist2Data'),
+            songs: this.getSongDifference('playlist1Data', 'playlist2Data')
+          }
+        }
+      });
     }
 
     componentDidMount = () => {
@@ -363,8 +400,8 @@ class HomePage extends React.Component {
                    playlist2={this.props.playlist2}
                    playlist1Data={this.state.playlist1Data}
                    playlist2Data={this.state.playlist2Data}
-                   simularityScore={simularityScore}
-                   sources={this.generateSources()} />
+                   simularityScore={this.getSimilarityScore()}
+                   sources={this.state.sources} />
         </div>
       );
     }
