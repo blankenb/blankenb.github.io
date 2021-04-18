@@ -88,6 +88,10 @@ class HomePage extends React.Component {
     }
     
     getSmallImageUrl = (images) => {
+      if (images.length === 0) {
+        return '';
+      }
+
       let smallest = { height: 999999 };
       for (const image of images) {
         if (image.height < smallest.height) {
@@ -98,6 +102,10 @@ class HomePage extends React.Component {
     }
 
     getMediumImageUrl = (images) => {
+      if (images.length === 0) {
+        return '';
+      }
+
       for (const image of images) {
         if (image.height >= 200 && image.height <= 400) {
           return image.url;
@@ -217,8 +225,8 @@ class HomePage extends React.Component {
         .map(name => {
           return {
             name: name,
-            p1Count: this.state.playlist1Data.genres[name],
-            p2Count: this.state.playlist2Data.genres[name]
+            playlist1DataCount: this.state.playlist1Data.genres[name],
+            playlist2DataCount: this.state.playlist2Data.genres[name]
           }
         });
       }
@@ -242,8 +250,8 @@ class HomePage extends React.Component {
             name: this.state.playlist1Data.artists[id].name,
             url: this.state.playlist1Data.artists[id].url,
             imageUrl: this.state.playlist1Data.artists[id].imageUrl,
-            p1Count: this.state.playlist1Data.artists[id].count,
-            p2Count: this.state.playlist2Data.artists[id].count
+            playlist1DataCount: this.state.playlist1Data.artists[id].count,
+            playlist2DataCount: this.state.playlist2Data.artists[id].count
           }
         });
       }
@@ -261,6 +269,63 @@ class HomePage extends React.Component {
       }
     }
 
+    // Gets the set difference for the data of playlistKey1 - playlistKey2
+    getGenreDifference = (playlistKey1, playlistKey2) => {
+      if (this.state[playlistKey1].genreSet === null || this.state[playlistKey2].genreSet === null) {
+        return [];
+      } else {
+        return Array.from(new Set(
+          [...this.state[playlistKey1].genreSet]
+          .filter(x => !this.state[playlistKey2].genreSet.has(x))
+        ))
+        .sort((a, b) => {
+          return this.state[playlistKey1].genres[b] - this.state[playlistKey1].genres[a];
+        })
+        .map(name => {
+          let toReturn = { name: name };
+          toReturn[playlistKey1 + 'Count'] = this.state[playlistKey1].genres[name];
+          return toReturn;
+        });
+      }
+    }
+
+    // Gets the set difference for the data of playlistKey1 - playlistKey2
+    getArtistDifference = (playlistKey1, playlistKey2) => {
+      if (this.state[playlistKey1].artistSet === null || this.state[playlistKey2].artistSet === null) {
+        return [];
+      } else {
+        return Array.from(new Set(
+          [...this.state[playlistKey1].artistSet]
+          .filter(x => !this.state[playlistKey2].artistSet.has(x))
+        ))
+        .sort((a, b) => {
+          return this.state[playlistKey1].artists[b].count - this.state[playlistKey1].artists[a].count;
+        })
+        .map(id => {
+          let toReturn = {
+            name: this.state[playlistKey1].artists[id].name,
+            url: this.state[playlistKey1].artists[id].url,
+            imageUrl: this.state[playlistKey1].artists[id].imageUrl
+          }
+          toReturn[playlistKey1 + 'Count'] = this.state[playlistKey1].artists[id].count;
+          return toReturn;
+        });
+      }
+    }
+
+    // Gets the set difference for the data of playlistKey1 - playlistKey2
+    getSongDifference = (playlistKey1, playlistKey2) => {
+      if (this.state[playlistKey1].songSet === null || this.state[playlistKey2].songSet === null) {
+        return [];
+      } else {
+        return Array.from(new Set(
+          [...this.state[playlistKey1].songSet]
+          .filter(x => !this.state[playlistKey2].songSet.has(x))
+        ))
+        .map(id => this.state[playlistKey1].songs[id]);
+      }
+    }
+
     generateSources = () => {
       return {
         shared: {
@@ -268,15 +333,15 @@ class HomePage extends React.Component {
           artists: this.getArtistIntersection(),
           songs: this.getSongIntersection()
         },
-        p1: { // todo
-          genres: [],
-          artists: [],
-          songs: []
+        p1: {
+          genres: this.getGenreDifference('playlist2Data', 'playlist1Data'),
+          artists: this.getArtistDifference('playlist2Data', 'playlist1Data'),
+          songs: this.getSongDifference('playlist2Data', 'playlist1Data')
         },
-        p2: { // todo
-          genres: [],
-          artists: [],
-          songs: []
+        p2: {
+          genres: this.getGenreDifference('playlist1Data', 'playlist2Data'),
+          artists: this.getArtistDifference('playlist1Data', 'playlist2Data'),
+          songs: this.getSongDifference('playlist1Data', 'playlist2Data')
         }
       }
     }

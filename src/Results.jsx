@@ -71,6 +71,8 @@ class Results extends React.Component {
     const artists = this.props.sources[this.state.menuSelected].artists;
     const songs = this.props.sources[this.state.menuSelected].songs
 
+    console.log(artists);
+
     return (
       <div className="stats-wrapper">
         <section id="menu">
@@ -127,8 +129,12 @@ class Results extends React.Component {
                   return (
                     <li key={index} style={{backgroundImage: `linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${artist.imageUrl})`}}>
                       <a href={artist.url} target="_blank" className="artist-link">
-                        <span className="artist-name">
-                          {artist.name}
+                        <span className="artist-name-wrapper-wrapper">
+                          <span className="artist-name-wrapper">
+                            <span className="artist-name">
+                              {artist.name}
+                            </span>
+                          </span>
                         </span>
                       </a>
                     </li>

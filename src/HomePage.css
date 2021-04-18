@@ -117,16 +117,11 @@ ul.statistic-value li {
 #artists .artist-link:hover {
   background-color: rgba(0, 0, 0, 0.4);
 }
-#artists .artist-link .artist-name {
+
+#artists .artist-link .artist-name-wrapper {
   position: relative;
-  max-width: 75%;
-  left: 0;
-  transition: left 0.3s;
 }
-#artists .artist-link:hover .artist-name {
-  left: -.5rem;
-}
-#artists .artist-link .artist-name::after {
+#artists .artist-link .artist-name-wrapper::after {
   pointer-events: none;
   position: absolute;
   content: "";
@@ -138,15 +133,25 @@ ul.statistic-value li {
   height: 13px;
   top: 50%;
   transform: translate(-50%);
+  -moz-transform:	translateY(-50%);
   -webkit-transform: translateY(-50%);
   opacity: 0;
   right: -0.7rem;
   transition: opacity 0.3s, right 0.3s;
 }
-#artists .artist-link:hover .artist-name::after {
+#artists .artist-link:hover .artist-name-wrapper::after {
   opacity: 1;
   right: -1.2rem;
   transition: opacity 0.3s, right 0.3s;
+}
+
+#artists .artist-link .artist-name {
+  position: relative;
+  left: 0;
+  transition: left 0.3s;
+}
+#artists .artist-link:hover .artist-name {
+  left: -.5rem;
 }
 
 #songs {
@@ -206,6 +211,7 @@ ul.statistic-value li {
   height: 13px;
   top: 50%;
   transform: translate(-50%);
+  -moz-transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
   opacity: 0;
   right: 2rem;
