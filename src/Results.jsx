@@ -4,14 +4,15 @@ import './HomePage.css';
 class Results extends React.Component {
   constructor(props) {
     super(props);
+    
     this.state = {
-      simularityScore: this.props.simularityScore,
-      sharedGenres: this.props.sharedGenres,
-      recGenres: this.props.recGenres,
-      sharedArtists: this.props.sharedArtists,
-      recArtists: this.props.recArtists,
-      sharedSongs: this.props.sharedSongs,
-      recSongs: this.props.recSongs,
+      // simularityScore: this.props.simularityScore,
+      // sharedGenres: this.props.sharedGenres,
+      // recGenres: this.props.recGenres,
+      // sharedArtists: this.props.sharedArtists,
+      // recArtists: this.props.recArtists,
+      // sharedSongs: this.props.sharedSongs,
+      // recSongs: this.props.recSongs,
       menuSelected: 'shared'
     }
   }
@@ -34,8 +35,28 @@ class Results extends React.Component {
     }
   }
 
+  getBrightness = (r, g, b) => {
+    return ((r * 299) + (g * 587) + (b * 114)) / 1000; // from https://www.w3.org/WAI/ER/WD-AERT/#color-contrast
+  }
+
+  getRandomColorStyling = () =>  {
+    var r = Math.floor(Math.random() * 256);
+    var g = Math.floor(Math.random() * 256);
+    var b = Math.floor(Math.random() * 256);
+
+    let brightness = this.getBrightness(r, g, b);
+    return { 
+      'background-color': `rgb(${r}, ${g}, ${b})`,
+      'color': brightness >= 128 ? '#2d2d2d' : '#ffffff'
+    }
+  }
+
   render() {
-    const { simularityScore, sharedGenres, recGenres, sharedArtists, recArtists, sharedSongs, recSongs } = this.state;
+    const simularityScore = this.props.simularityScore; // TODO
+    const sharedGenres = this.props.sharedGenres; // TODO
+    const sharedArtists = this.props.sharedArtists; // TODO
+    const sharedSongs = this.props.sharedSongs; // TODO
+
     return (
       <div className="stats-wrapper">
         <section id="menu">
@@ -64,7 +85,7 @@ class Results extends React.Component {
           <h2 className="section-name">Genres</h2>
           <ul className="statistic-value">
             {sharedGenres.map((value, index) => {
-              return <li key={index}>{value}</li>
+              return <li key={index} style={this.getRandomColorStyling()}>{value}</li>
             })}
           </ul>
         </section>

@@ -34,7 +34,7 @@ class HomePage extends React.Component {
       };
     }
 
-    fetchPlaylistTracks(nextKey, playlistKey, updateObject) {
+    fetchPlaylistTracks = (nextKey, playlistKey, updateObject) => {
       if (updateObject === null) {
         console.log("Building new updateobject for " + nextKey + " " + playlistKey);
         updateObject = {};
@@ -80,7 +80,7 @@ class HomePage extends React.Component {
       );
     }
 
-    formatData(playlistKey) {
+    formatData = (playlistKey) => {
       let updateObject = {};
       updateObject[playlistKey] = this.state[playlistKey];
 
@@ -148,7 +148,20 @@ class HomePage extends React.Component {
       );
     }
 
-    componentDidMount() {
+    getGenreIntersection = () => {
+      if (this.state.playlist1Data.genreSet === null || this.state.playlist2Data.genreSet === null) {
+        return [];
+      } else {
+        return Array.from(new Set(
+          [...this.state.playlist1Data.genreSet]
+          .filter(x => this.state.playlist1Data.genreSet.has(x))
+        ));
+      }
+
+      // TODO: Sort by count
+    }
+
+    componentDidMount = () => {
       console.log("fetching playlists");
       this.fetchPlaylistTracks('next1', 'playlist1Data', null);
       this.fetchPlaylistTracks('next2', 'playlist2Data', null);
@@ -169,8 +182,10 @@ class HomePage extends React.Component {
                    setPlaylists={this.props.setPlaylists}/>
           <Results playlist1={this.props.playlist1}
                    playlist2={this.props.playlist2}
+                   playlist1Data={this.state.playlist1Data}
+                   playlist2Data={this.state.playlist2Data}
                    simularityScore={simularityScore}
-                   sharedGenres={sharedGenres}
+                   sharedGenres={this.getGenreIntersection()}
                    recGenres={recGenres}
                    sharedArtists={sharedArtists}
                    recArtists={recArtists}

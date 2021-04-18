@@ -88,6 +88,13 @@ ul.statistic-value li {
   align-items: center;
 }
 
+#genres ul.statistic-value li {
+  width: auto;
+  height: auto;
+  padding: 1em;
+  border-radius: 1rem;
+}
+
 #songs ul.statistic-value {
   flex-direction: column;
 }
