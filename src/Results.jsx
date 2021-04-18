@@ -125,8 +125,12 @@ class Results extends React.Component {
             : <ul className="statistic-value">
                 { artists.map((artist, index) => {
                   return (
-                    <li key={index} style={{backgroundImage: `url(${artist.imageUrl})`}}>
-                      {artist.name}
+                    <li key={index} style={{backgroundImage: `linear-gradient(0deg, rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${artist.imageUrl})`}}>
+                      <a href={artist.url} target="_blank" className="artist-link">
+                        <span className="artist-name">
+                          {artist.name}
+                        </span>
+                      </a>
                     </li>
                   )
                 })}

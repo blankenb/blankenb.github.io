@@ -21,11 +21,11 @@ class Sidebar extends React.Component{
                         </div>
                         <div className="playlist">
                             <div className="playlist-name">{this.props.playlist1.name}</div>
-                            <div className="playlist-owner">Owned by <b>{this.props.playlist1.owner.display_name}</b></div>
+                            <div className="playlist-owner">Created by <b>{this.props.playlist1.owner.display_name}</b></div>
                         </div>
                         <div className="playlist">
                             <div className="playlist-name">{this.props.playlist2.name}</div>
-                            <div className="playlist-owner">Owned by <b>{this.props.playlist2.owner.display_name}</b></div>
+                            <div className="playlist-owner">Created by <b>{this.props.playlist2.owner.display_name}</b></div>
                         </div>
                     </div>
                 </div>

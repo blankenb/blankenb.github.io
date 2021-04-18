@@ -99,8 +99,54 @@ ul.statistic-value li {
 #genres ul.statistic-value li {
   width: auto;
   height: auto;
-  padding: 1em;
-  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+}
+
+#artists .artist-link {
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: transparent;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#artists .artist-link:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+#artists .artist-link .artist-name {
+  position: relative;
+  max-width: 75%;
+  left: 0;
+  transition: left 0.3s;
+}
+#artists .artist-link:hover .artist-name {
+  left: -.5rem;
+}
+#artists .artist-link .artist-name::after {
+  pointer-events: none;
+  position: absolute;
+  content: "";
+  background-image: url("./caret.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 10px;
+  height: 13px;
+  top: 50%;
+  transform: translate(-50%);
+  -webkit-transform: translateY(-50%);
+  opacity: 0;
+  right: -0.7rem;
+  transition: opacity 0.3s, right 0.3s;
+}
+#artists .artist-link:hover .artist-name::after {
+  opacity: 1;
+  right: -1.2rem;
+  transition: opacity 0.3s, right 0.3s;
 }
 
 #songs {
@@ -120,17 +166,15 @@ ul.statistic-value li {
   height: 3.5rem;
   margin-right: 0;
   margin-bottom: 0.7em;
-  box-shadow: 0 0 3px 3px transparent;
-  transition: box-shadow 0.3s, background-color 0.3s;
+  transition: background-color 0.3s;
 }
 #songs ul.statistic-value li:hover {
-  box-shadow: 0 0 3px 3px #2d2d2d;
-  background-color: #646464;
+  background-color: #202020;
 }
 #songs ul.statistic-value li::after {
   pointer-events: none;
   position: absolute;
-  content: "Open in Spotify";
+  content: "Play in Spotify";
   font-size: 1rem;
   opacity: 0;
   right: 2rem;
