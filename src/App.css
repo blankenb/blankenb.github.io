@@ -67,6 +67,9 @@ button.menu {
   transition: color 0.2s;
   color: #b7b7b7;
 }
+button.menu:last-child {
+  margin-right: 0;
+}
 button.menu.selected, button.menu:hover {
   color: #ffffff;
 }

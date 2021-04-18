@@ -8,19 +8,29 @@ class HomePage extends React.Component {
     constructor(props) {
       super(props);
 
-      const { accessToken, playlist1, playlist2 } = this.props;
+      const { playlist1, playlist2 } = this.props;
       
       // -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQAGal7mnvIYFX8h_IpWCUp9F2U3Id3vGWYnQN_eEINooQZknDCdX8sCpCYmJrnOkFw8C0EeIG4MFnGCGZ8"
 
       this.state = {
         next1: `https://api.spotify.com/v1/playlists/${playlist1.id}/tracks?fields=next%2Citems(track(name%2Cid%2Cartists%2Cexternal_urls%2Cpreview_url))&limit=100`,
-        playlist1Tracks: {
-          items: []
+        playlist1Data: {
+          items: [],
+          artists: {},
+          genres: {},
+          songSet: null,
+          artistSet: null,
+          genreSet: null
         },
         next2: `https://api.spotify.com/v1/playlists/${playlist2.id}/tracks?fields=next%2Citems(track(name%2Cid%2Cartists%2Cexternal_urls%2Cpreview_url))&limit=100`,
-        playlist2Tracks: {
-          items: []
-        },
+        playlist2Data: {
+          items: [],
+          artists: {},
+          genres: {},
+          songSet: null,
+          artistSet: null,
+          genreSet: null
+        }
       };
     }
 
@@ -71,10 +81,18 @@ class HomePage extends React.Component {
     }
 
     formatData(playlistKey) {
+      let updateObject = {};
+      updateObject[playlistKey] = this.state[playlistKey];
+
+      console.log("Setting songs for " + playlistKey);
+      let songSet = new Set();
+      for (const track of this.state[playlistKey].items) {
+        songSet.add(track.track.id);
+      }
+      updateObject[playlistKey]['songSet'] = songSet;
+
       console.log("Setting artists for " + playlistKey);
-
-      let artists = {}
-
+      let artists = {};
       for (const track of this.state[playlistKey].items) {
         for (const artist of track.track.artists) {
           if (artists.hasOwnProperty(artist.id)) {
@@ -87,19 +105,53 @@ class HomePage extends React.Component {
           }
         }
       }
-      let updateObject = {};
-      updateObject[playlistKey] = this.state[playlistKey];
       updateObject[playlistKey]['artists'] = artists;
+      updateObject[playlistKey]['artistSet'] = new Set(Object.keys(artists));
 
-      this.setState(updateObject);
+      console.log("Setting genres for " + playlistKey);
+      let genres = {};
+      let artistIds = Object.keys(artists).slice(0, 50).join("%2C"); // TODO: Use all artists not just first 50
+      fetch(`https://api.spotify.com/v1/artists?ids=${artistIds}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.props.accessToken
+        }
+      })
+      .then((res) => res.json())
+      .then(
+        (res) => {
+          for (const artist of res.artists) {
+            for (const genre of artist.genres) {
+              if (genres.hasOwnProperty(genre)) {
+                genres[genre] += 1;
+              } else {
+                genres[genre] = 1;
+              }
+            }
+          }
 
-      console.log(this.state);
+          updateObject[playlistKey]['genres'] = genres;
+          updateObject[playlistKey]['genreSet'] = new Set(Object.keys(genres));
+
+          this.setState(updateObject);
+    
+          console.log(this.state);
+        }
+      )
+      .catch(
+        (err) => {
+          console.log(err);
+          // TODO: Handle
+        }
+      );
     }
 
     componentDidMount() {
       console.log("fetching playlists");
-      this.fetchPlaylistTracks('next1', 'playlist1Tracks', null);
-      this.fetchPlaylistTracks('next2', 'playlist2Tracks', null);
+      this.fetchPlaylistTracks('next1', 'playlist1Data', null);
+      this.fetchPlaylistTracks('next2', 'playlist2Data', null);
     }
 
     render(){
@@ -115,7 +167,9 @@ class HomePage extends React.Component {
           <Sidebar playlist1={this.props.playlist1}
                    playlist2={this.props.playlist2}
                    setPlaylists={this.props.setPlaylists}/>
-          <Results simularityScore={simularityScore}
+          <Results playlist1={this.props.playlist1}
+                   playlist2={this.props.playlist2}
+                   simularityScore={simularityScore}
                    sharedGenres={sharedGenres}
                    recGenres={recGenres}
                    sharedArtists={sharedArtists}
