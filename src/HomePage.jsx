@@ -144,10 +144,24 @@ class HomePage extends React.Component {
       updateObject[playlistKey]['artists'] = artists;
       updateObject[playlistKey]['artistSet'] = new Set(Object.keys(artists));
 
+      this.formatExtraData(playlistKey, updateObject, Object.keys(artists).slice(0));
+    }
+
+    // Handles genres and artist images
+    formatExtraData = (playlistKey, updateObject, remainingArtists) => {
+      if (remainingArtists.length === 0) {
+        console.log("Finished collecting extra data for " + playlistKey);
+        this.setState(updateObject);
+        console.log(this.state);
+        return;
+      }
+
       console.log("Setting genres for " + playlistKey);
       let genres = {};
-      // TODO: Get artist image
-      let artistIds = Object.keys(artists).slice(0, 50).join("%2C"); // TODO: Use all artists not just first 50
+      
+      // Spotify's API can only handle 50 at a time
+      let artistIds = remainingArtists.slice(0, 50).join("%2C");
+      remainingArtists = remainingArtists.slice(50);
       fetch(`https://api.spotify.com/v1/artists?ids=${artistIds}`, {
         method: 'GET',
         headers: {
@@ -159,6 +173,8 @@ class HomePage extends React.Component {
       .then((res) => res.json())
       .then(
         (res) => {
+          console.log(res);
+
           for (const artist of res.artists) {
             for (const genre of artist.genres) {
               if (genres.hasOwnProperty(genre)) {
@@ -173,13 +189,8 @@ class HomePage extends React.Component {
 
           updateObject[playlistKey]['genres'] = genres;
           updateObject[playlistKey]['genreSet'] = new Set(Object.keys(genres));
-          
-          
-          console.log(res);
 
-          this.setState(updateObject);
-    
-          console.log(this.state);
+          this.formatExtraData(playlistKey, updateObject, remainingArtists);
         }
       )
       .catch(
