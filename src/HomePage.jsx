@@ -12,32 +12,36 @@ class HomePage extends React.Component {
       
       // -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQAGal7mnvIYFX8h_IpWCUp9F2U3Id3vGWYnQN_eEINooQZknDCdX8sCpCYmJrnOkFw8C0EeIG4MFnGCGZ8"
 
-      // this.state = {
-      //   next1: `https://api.spotify.com/v1/users/${playlist1}/playlists?limit=50`,
-      //   playlist1: {
-      //     items: []
-      //   },
-      //   next2: `https://api.spotify.com/v1/users/${playlist2}/playlists?limit=50`,
-      //   playlist2: {
-      //     items: []
-      //   },
-      // };
+      this.state = {
+        next1: `https://api.spotify.com/v1/playlists/${playlist1.id}/tracks?fields=next%2Citems(track(name%2Cid%2Cartists%2Cexternal_urls%2Cpreview_url))&limit=100`,
+        playlist1Tracks: {
+          items: []
+        },
+        next2: `https://api.spotify.com/v1/playlists/${playlist2.id}/tracks?fields=next%2Citems(track(name%2Cid%2Cartists%2Cexternal_urls%2Cpreview_url))&limit=100`,
+        playlist2Tracks: {
+          items: []
+        },
+      };
     }
 
-    fetchPlaylistTracks(nextKey, playlistsKey, updateObject) {
+    fetchPlaylistTracks(nextKey, playlistKey, updateObject) {
       if (updateObject === null) {
-        console.log("Building new updateobject for " + nextKey + " " + playlistsKey);
+        console.log("Building new updateobject for " + nextKey + " " + playlistKey);
         updateObject = {};
         updateObject[nextKey] = this.state[nextKey];
-        updateObject[playlistsKey] = this.state[playlistsKey];
+        updateObject[playlistKey] = this.state[playlistKey];
       }
 
       if (updateObject[nextKey] === null) {
-        console.log("FETCHING no more playlists for " + nextKey + " " + playlistsKey);
+        console.log("FETCHING no more playlists for " + nextKey + " " + playlistKey);
         this.setState(updateObject);
+
+        this.formatData(playlistKey);
         return;
       }
-      console.log("FETCHING playlists for " + nextKey + " " + playlistsKey);
+
+      console.log("FETCHING playlists for " + nextKey + " " + playlistKey);
+      console.log(updateObject);
 
       fetch(updateObject[nextKey], {
         method: 'GET',
@@ -50,18 +54,15 @@ class HomePage extends React.Component {
       .then((res) => res.json())
       .then(
         (res) => {
-
-          // let playlists = res.items.map((playlist) => {
-          //   return {
-          //     id: playlist.id,
-          //     name: playlist.name
-          //   }
-          // });
+          // console.log("Fetched for " + playlistKey);
+          // console.log(res);
 
           updateObject[nextKey] = res.next;
-          updateObject[playlistsKey].items = updateObject[playlistsKey].items.concat(res.items);
-          this.fetchPlaylists(nextKey, playlistsKey, updateObject);
-        },
+          updateObject[playlistKey].items = updateObject[playlistKey].items.concat(res.items);
+          this.fetchPlaylistTracks(nextKey, playlistKey, updateObject);
+        }
+      )
+      .catch(
         (err) => {
           console.log(err);
           // TODO: Handle
@@ -69,55 +70,36 @@ class HomePage extends React.Component {
       );
     }
 
-    // fetchPlaylists(nextKey, playlistsKey, updateObject) {
-    //   if (updateObject === null) {
-    //     console.log("Building new updateobject for " + nextKey + " " + playlistsKey);
-    //     updateObject = {};
-    //     updateObject[nextKey] = this.state[nextKey];
-    //     updateObject[playlistsKey] = this.state[playlistsKey];
-    //   }
+    formatData(playlistKey) {
+      console.log("Setting artists for " + playlistKey);
 
-    //   if (updateObject[nextKey] === null) {
-    //     console.log("FETCHING no more playlists for " + nextKey + " " + playlistsKey);
-    //     this.setState(updateObject);
-    //     return;
-    //   }
-    //   console.log("FETCHING playlists for " + nextKey + " " + playlistsKey);
+      let artists = {}
 
-    //   fetch(updateObject[nextKey], {
-    //     method: 'GET',
-    //     headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json',
-    //       'Authorization': 'Bearer ' + this.props.accessToken
-    //     }
-    //   })
-    //   .then((res) => res.json())
-    //   .then(
-    //     (res) => {
+      for (const track of this.state[playlistKey].items) {
+        for (const artist of track.track.artists) {
+          if (artists.hasOwnProperty(artist.id)) {
+            artists[artist.id].count += 1;
+          } else {
+            artists[artist.id] = {
+              name: artist.name,
+              count: 1
+            };
+          }
+        }
+      }
+      let updateObject = {};
+      updateObject[playlistKey] = this.state[playlistKey];
+      updateObject[playlistKey]['artists'] = artists;
 
-    //       // let playlists = res.items.map((playlist) => {
-    //       //   return {
-    //       //     id: playlist.id,
-    //       //     name: playlist.name
-    //       //   }
-    //       // });
+      this.setState(updateObject);
 
-    //       updateObject[nextKey] = res.next;
-    //       updateObject[playlistsKey].items = updateObject[playlistsKey].items.concat(res.items);
-    //       this.fetchPlaylists(nextKey, playlistsKey, updateObject);
-    //     },
-    //     (err) => {
-    //       console.log(err);
-    //       // TODO: Handle
-    //     }
-    //   );
-    // }
+      console.log(this.state);
+    }
 
     componentDidMount() {
       console.log("fetching playlists");
-      // this.fetchPlaylists("next1", "playlists1", null);
-      // this.fetchPlaylists("next2", "playlists2", null);
+      this.fetchPlaylistTracks('next1', 'playlist1Tracks', null);
+      this.fetchPlaylistTracks('next2', 'playlist2Tracks', null);
     }
 
     render(){
