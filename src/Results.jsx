@@ -6,13 +6,6 @@ class Results extends React.Component {
     super(props);
     
     this.state = {
-      // simularityScore: this.props.simularityScore,
-      // sharedGenres: this.props.sharedGenres,
-      // recGenres: this.props.recGenres,
-      // sharedArtists: this.props.sharedArtists,
-      // recArtists: this.props.recArtists,
-      // sharedSongs: this.props.sharedSongs,
-      // recSongs: this.props.recSongs,
       menuSelected: 'shared'
     }
   }
@@ -36,7 +29,8 @@ class Results extends React.Component {
   }
 
   getBrightness = (r, g, b) => {
-    return ((r * 299) + (g * 587) + (b * 114)) / 1000; // from https://www.w3.org/WAI/ER/WD-AERT/#color-contrast
+     // From https://www.w3.org/WAI/ER/WD-AERT/#color-contrast
+    return ((r * 299) + (g * 587) + (b * 114)) / 1000;
   }
 
   getRandomColorStyling = () => {
@@ -65,13 +59,12 @@ class Results extends React.Component {
   }
 
   render() {
-    const simularityScore = this.props.simularityScore; // TODO
-
+    const simularityScore = this.props.simularityScore;
     const genres = this.props.sources[this.state.menuSelected].genres;
     const artists = this.props.sources[this.state.menuSelected].artists;
     const songs = this.props.sources[this.state.menuSelected].songs
 
-    console.log(artists);
+    // console.log(artists);
 
     return (
       <div className="stats-wrapper">

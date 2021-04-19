@@ -106,7 +106,7 @@ class HomePage extends React.Component {
     }
     
     getSmallImageUrl = (images) => {
-      if (images.length === 0) {
+      if (!images || images.length === 0) {
         return '';
       }
 
@@ -120,7 +120,7 @@ class HomePage extends React.Component {
     }
 
     getMediumImageUrl = (images) => {
-      if (images.length === 0) {
+      if (!images || images.length === 0) {
         return '';
       }
 
@@ -205,6 +205,10 @@ class HomePage extends React.Component {
           console.log(res);
 
           for (const artist of res.artists) {
+            if (!artist) {
+              continue;
+            }
+
             for (const genre of artist.genres) {
               if (genres.hasOwnProperty(genre)) {
                 genres[genre] += 1;

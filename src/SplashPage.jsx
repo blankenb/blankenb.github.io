@@ -60,7 +60,13 @@ class SplashPage extends React.Component {
       })
       .then((res) => { 
         if (!res.ok) {
-          throw new Error('404');
+          if (res.status === 404) {
+            throw new Error('404');
+          } else if (res.status === 401) {
+            throw new Error('401');
+          } else {
+            throw new Error('400');
+          }
         }
 
         return res.json(); 
@@ -83,8 +89,13 @@ class SplashPage extends React.Component {
           console.log(err);
 
           let updateObject = {};
-          updateObject[playlistKey + 'Error'] = err.message == '404' ? 
-            'Playlist not found' : 'Unknown error occurred'; 
+          if (err.message === '404') {
+            updateObject[playlistKey + 'Error'] = 'Playlist not found';
+          } else if (err.message === '401') {
+            updateObject[playlistKey + 'Error'] = 'Error connecting to Spotify. Please reload the page and try again.'; 
+          } else {
+            updateObject[playlistKey + 'Error'] = 'Unknown error occurred'; 
+          }
           this.setState(updateObject);
         }
       );
