@@ -244,7 +244,13 @@ class HomePage extends React.Component {
         ))
         .sort((a, b) => {
           let aCount = this.state.playlist1Data.genres[a] + this.state.playlist2Data.genres[a];
+          if (isNaN(aCount)) {
+            aCount = 0;
+          }
           let bCount = this.state.playlist1Data.genres[b] + this.state.playlist2Data.genres[b];
+          if (isNaN(bCount)) {
+            bCount = 0;
+          }
           return bCount - aCount;
         })
         .map(name => {
@@ -267,7 +273,13 @@ class HomePage extends React.Component {
         ))
         .sort((a, b) => {
           let aCount = this.state.playlist1Data.artists[a].count + this.state.playlist2Data.artists[a].count;
+          if (isNaN(aCount)) {
+            aCount = 0;
+          }
           let bCount = this.state.playlist1Data.artists[b].count + this.state.playlist2Data.artists[b].count;
+          if (isNaN(bCount)) {
+            bCount = 0;
+          }
           return bCount - aCount;
         })
         .map(id => {
@@ -304,7 +316,15 @@ class HomePage extends React.Component {
           .filter(x => !this.state[playlistKey2].genreSet.has(x))
         ))
         .sort((a, b) => {
-          return this.state[playlistKey1].genres[b] - this.state[playlistKey1].genres[a];
+          let aCount = this.state[playlistKey1].genres[a];
+          if (isNaN(aCount)) {
+            aCount = 0;
+          }
+          let bCount = this.state[playlistKey1].genres[b];
+          if (isNaN(bCount)) {
+            bCount = 0;
+          }
+          return bCount - aCount;
         })
         .map(name => {
           let toReturn = { name: name };
@@ -324,7 +344,15 @@ class HomePage extends React.Component {
           .filter(x => !this.state[playlistKey2].artistSet.has(x))
         ))
         .sort((a, b) => {
-          return this.state[playlistKey1].artists[b].count - this.state[playlistKey1].artists[a].count;
+          let aCount = this.state[playlistKey1].artists[a].count;
+          if (isNaN(aCount)) {
+            aCount = 0;
+          }
+          let bCount = this.state[playlistKey1].artists[b].count;
+          if (isNaN(bCount)) {
+            bCount = 0;
+          }
+          return bCount - aCount;
         })
         .map(id => {
           let toReturn = {
