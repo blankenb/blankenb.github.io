@@ -191,6 +191,7 @@ ul.statistic-value li {
   background-color: #202020;
 }
 #songs ul.statistic-value li::after {
+  z-index: 9998;
   pointer-events: none;
   position: absolute;
   content: "Play in Spotify";
@@ -210,10 +211,9 @@ ul.statistic-value li {
   height: 100%;
   color: #ffffff;
   text-decoration: none;
-  display: flex;
-  align-items: center;
 }
 #songs li a::after {
+  z-index: 9999;
   pointer-events: none;
   position: absolute;
   content: "";
@@ -237,6 +237,31 @@ ul.statistic-value li {
   transition: opacity 0.3s, right 0.3s;
 }
 
+#songs .song-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#songs .song-wrapper::after {
+  z-index: 9997;
+  pointer-events: none;
+  position: absolute;
+  content: "";
+  height: 3.5rem; /* match li */
+  width: 15rem;
+  background-image: linear-gradient(90deg, rgba(32, 32, 32, 0) 0%, rgba(32, 32, 32, 1) 33%);
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  right: 0;
+  transition: opacity 0.3s;
+}
+#songs .song-wrapper:hover:after {
+  opacity: 1;
+}
+
 #songs .song-image {
   margin-left: calc((3.5rem - 3rem) / 2); /* li (height - this height) / 2*/
   width: 3rem;
@@ -244,12 +269,21 @@ ul.statistic-value li {
   background-size: cover;
   background-color: #191919;
 }
-#songs .artist-names {
-  margin-left: 2rem;
-  width: 20rem;
-  font-weight: 500;
-}
 #songs .song-name {
+  padding: 0 2rem;
+  width: 16rem;
+  font-weight: 500;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+#songs .artist-names {
+  flex: 1;
   font-weight: 400;
   font-size: 1rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }

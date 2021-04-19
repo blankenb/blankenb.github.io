@@ -35,8 +35,6 @@ class SplashPage extends React.Component {
     }
 
     fetchPlaylist(playlistUrl, playlistKey) {
-      this.props.refreshTokenIfNecessary();
-
       let re = /playlist\/(?<playlist_id>\w+)/;
       let match = playlistUrl.match(re);
 
@@ -51,6 +49,7 @@ class SplashPage extends React.Component {
 
       const apiUrl = `https://api.spotify.com/v1/playlists/${match.groups.playlist_id}?fields=id%2Cname%2Cowner%2Cimages`
 
+      this.props.refreshTokenIfNecessary();
       fetch(apiUrl, {
         method: 'GET',
         headers: {
@@ -111,7 +110,7 @@ class SplashPage extends React.Component {
         <div className="splash-page">
           <h1>Welcome to Library Linker</h1>
           <div className="playlist-enter">
-            <p>Enter the URLs of two Spotify playlists to begin</p> 
+            <p>Enter the URLs of two Spotify playlists to check their similarity and discover recommendations</p> 
             <form onSubmit={this.handleSubmit}>
                 <div className="textbox-wrapper">
                   <input type="text" 

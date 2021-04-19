@@ -77,6 +77,7 @@ class HomePage extends React.Component {
       console.log("FETCHING playlists for " + nextKey + " " + playlistKey);
       console.log(updateObject);
 
+      this.props.refreshTokenIfNecessary();
       fetch(updateObject[nextKey], {
         method: 'GET',
         headers: {
@@ -188,6 +189,8 @@ class HomePage extends React.Component {
       // Spotify's API can only handle 50 at a time
       let artistIds = remainingArtists.slice(0, 50).join("%2C");
       remainingArtists = remainingArtists.slice(50);
+
+      this.props.refreshTokenIfNecessary();
       fetch(`https://api.spotify.com/v1/artists?ids=${artistIds}`, {
         method: 'GET',
         headers: {
@@ -389,8 +392,7 @@ class HomePage extends React.Component {
       this.fetchPlaylistTracks('next2', 'playlist2Data', null);
     }
 
-    render(){
-      var simularityScore = 69.420;
+    render() {
       return (
         <div className="home-page">
           <Sidebar playlist1={this.props.playlist1}

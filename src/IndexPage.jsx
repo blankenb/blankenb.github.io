@@ -45,8 +45,11 @@ class IndexPage extends React.Component {
     }
 
     refreshTokenIfNecessary = () => {
-      if (this.state.validUntil <= Date.now()) {
+      if (localStorage.getItem('spotifyAccessToken') === null ||
+          Number(localStorage.getItem('spotifyValidUntil')) <= Date.now()) {
+        console.log("authorizing");
         this.getAuthToken();
+        return true;
       }
     }
 
@@ -59,14 +62,10 @@ class IndexPage extends React.Component {
     }
 
     componentDidMount() {
-      if (localStorage.getItem('spotifyAccessToken') === null ||
-          Number(localStorage.getItem('spotifyValidUntil')) <= Date.now()) {
-        console.log("authorizing");
-        this.getAuthToken();
-      } else {
+      if (!this.refreshTokenIfNecessary()) {
         this.setState({
           accessToken: localStorage.getItem('spotifyAccessToken'),
-          validUntil: localStorage.getItem('spotifyValidUntil')
+          validUntil: Number(localStorage.getItem('spotifyValidUntil'))
         });
       }
     }
@@ -78,7 +77,8 @@ class IndexPage extends React.Component {
           <HomePage accessToken={this.state.accessToken} 
                     playlist1={this.state.playlist1} 
                     playlist2={this.state.playlist2} 
-                    setPlaylists={this.setPlaylists} />
+                    setPlaylists={this.setPlaylists}
+                    refreshTokenIfNecessary={this.refreshTokenIfNecessary} />
         )
       } else {
         return (

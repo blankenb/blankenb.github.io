@@ -75,6 +75,13 @@ class Results extends React.Component {
 
     return (
       <div className="stats-wrapper">
+        <section id="similarity">
+          <h1 className="statistic-name">
+            Similarity:&nbsp;
+            <span className="statistic-value">{simularityScore}%</span>
+          </h1>
+        </section>
+
         <section id="menu">
           <button className={`menu ${this.state.menuSelected === 'shared' ? "selected" : ""}`}
                   onClick={this.selectShared}>
@@ -88,13 +95,6 @@ class Results extends React.Component {
                   onClick={this.selectPlaylist2Recommended}>
             Recommended for {this.props.playlist2.name}
           </button>
-        </section>
-
-        <section id="similarity">
-          <h1 className="statistic-name">
-            Similarity:&nbsp;
-            <span className="statistic-value">{simularityScore}%</span>
-          </h1>
         </section>
 
         <section id="genres">
@@ -158,12 +158,14 @@ class Results extends React.Component {
                   return (
                     <li key={index}>
                       <a href={song.url} target="_blank">
-                        <div className="song-image" style={{backgroundImage: `url(${song.imageUrl})`}}></div>
-                        <div className="artist-names">
-                          {artistNames}
-                        </div>
-                        <div className="song-name">
-                          {song.name}
+                        <div className="song-wrapper">
+                          <div className="song-image" style={{backgroundImage: `url(${song.imageUrl})`}}></div>
+                          <div className="song-name">
+                            {song.name}
+                          </div>
+                          <div className="artist-names">
+                            {artistNames}
+                          </div>
                         </div>
                       </a>
                     </li>
