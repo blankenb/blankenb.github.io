@@ -1,4 +1,5 @@
 {
+  "homepage": "http://blankenb.github.io/spotify",
   "name": "diamond-hands",
   "version": "0.1.0",
   "private": true,
@@ -6,7 +7,6 @@
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
-    "gh-pages": "^3.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router": "^5.2.0",
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-	"deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -50,5 +50,7 @@
   "bugs": {
     "url": "https://github.com/blankenb/spotify/issues"
   },
-  "homepage": "https://github.com/blankenb/spotify"
+  "devDependencies": {
+    "gh-pages": "^3.1.0"
+  }
 }
