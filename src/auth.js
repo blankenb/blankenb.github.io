@@ -1,3 +1,3 @@
-const CLIENT_ID = '770776614bfc481db181a1506efb6b9a';
-const CLIENT_SECRET = '065fd50712ca46d89b1744ecb28f613e'; // lol
+const CLIENT_ID = '94811ed896a241cbbc8dea7de3dc7e95';
+const CLIENT_SECRET = 'e7a8306c69934b56b75ac94a6c8fa81e'; // lol
 export const CLIENT_AUTH_FIELD = btoa(CLIENT_ID + ':' + CLIENT_SECRET);
